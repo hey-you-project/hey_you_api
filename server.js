@@ -22,7 +22,7 @@ var dotRouter = express.Router();
 //dotRouter.use(jwtauth);
 
 require('./routes/user_routes')(app);
-require('./routes/dot_routes')(app);
+require('./routes/dot_routes')(dotRouter);
 app.use('/v1', dotRouter);
 
 app.set('port', process.env.PORT || 3000);
