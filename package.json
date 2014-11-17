@@ -1,0 +1,19 @@
+{
+  "name": "hey_you_api",
+  "version": "1.0.0",
+  "description": "RESTful API for hey you",
+  "main": "server.js",
+  "scripts": {
+    "test": "node_modules/grunt-cli/bin/grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hey-you-project/hey_you_api.git"
+  },
+  "author": "Cameron Yee, Charles Renwick, Paul Laskowski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hey-you-project/hey_you_api/issues"
+  },
+  "homepage": "https://github.com/hey-you-project/hey_you_api"
+}
