@@ -24,6 +24,7 @@ module.exports = function(app, passport) {
       newUser.basic.password = newUser.generateHash(req.body.password);
       newUser.email = req.body.email;
       newUser.birthday = req.body.birthday;
+      newUser.creationDate = Date.now();
 
       newUser.save(function(err, data) {
         if (err) return res.status(500).send('server error');

@@ -12,7 +12,7 @@ var userSchema = mongoose.Schema({
   },
   email: String,
   birthday: Date,
-  creationDate: {type: Date, default: Date.now()}
+  creationDate: Number
 });
 
 userSchema.methods.generateHash = function(password) {
