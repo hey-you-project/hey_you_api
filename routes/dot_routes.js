@@ -33,7 +33,7 @@ module.exports = function(app) {
         console.log(err); // for dev only
         return res.status(500).send('there was an error');
       }
-      res.json({msg: 'success!'});
+      res.json({dot_id: dot._id});
     });
   });
 };
