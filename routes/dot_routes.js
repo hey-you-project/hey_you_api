@@ -19,15 +19,18 @@ module.exports = function(app) {
         /*
         {"latMax":47.61070610565,"longMin":-122.3387206914,"longMax":-122.3254213086,"latMin":47.60171189435}
         */
-        Dot.find({latitude:{ $gt: req.body.minLat, $lt: req.body.maxLat},
-               longitude: {$gt: req.body.minLong, $lt: req.body.maLong}},
-              function(err, data) {
-            if (err) {
-                console.log(err);
-                return res.status(500).send('there was an error');
-            }
-            res.json(data);
-        });
+        console.log('the full header', req.headers);
+        console.log(JSON.parse(req.headers.Zone));
+        res.json(req);
+//        Dot.find({latitude:{ $gt: req.body.minLat, $lt: req.body.maxLat},
+//               longitude: {$gt: req.body.minLong, $lt: req.body.maLong}},
+//              function(err, data) {
+//            if (err) {
+//                console.log(err);
+//                return res.status(500).send('there was an error');
+//            }
+//            res.json(data);
+//        });
     });
 
     app.post('/api/dots', function(req, res) {
