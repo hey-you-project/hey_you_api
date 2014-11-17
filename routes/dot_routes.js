@@ -15,17 +15,17 @@ module.exports = function(app) {
     });
 
     app.get('/api/dots', function(req, res) {
-        console.log('PRINTING zone:', req.headers.zone);
         var zone = JSON.parse(req.headers.zone);
+        if(!req.headers.zone){
+            res.status(500).send('expected zone in headers');
+        }
         /*
+        example data from zone:
         {"latMax":47.61070610565,"longMin":-122.3387206914,"longMax":-122.3254213086,"latMin":47.60171189435}
         */
-        //console.log('PRINTING HEADERS:', req.headers);
-        //console.log(JSON.parse(req.headers.Zone));
-        //res.json(zone);
         Dot.find({latitude:{ $gt: zone.latMin, $lt: zone.latMax},
-               longitude: {$gt: zone.longMin, $lt: zone.longMax}},
-              function(err, data) {
+                  longitude: {$gt: zone.longMin, $lt: zone.longMax}},
+                 function(err, data) {
             if (err) {
                 console.log(err);
                 return res.status(500).send('there was an error');
