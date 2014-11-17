@@ -15,7 +15,7 @@ module.exports = function(app) {
     });
 
     app.get('/api/dots', function(req, res) {
-        console.log(req.headers.Zone.latMax);
+        console.log(req.headers.Zone);
         /*
         {"latMax":47.61070610565,"longMin":-122.3387206914,"longMax":-122.3254213086,"latMin":47.60171189435}
         */
