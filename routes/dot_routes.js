@@ -14,6 +14,17 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/api/dots/:id', function(req, res) {
+        Dot.find({_id: req.params.id}, function(err, data) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('there was an error');
+            }
+            res.json(data);
+        });
+    });
+
+  
     app.get('/api/dots', function(req, res) {
         if(!req.headers.zone){
             res.status(500).send('expected zone in headers');
@@ -33,15 +44,15 @@ module.exports = function(app) {
             res.json(data);
         });
     });
-
-    app.post('/api/dots', function(req, res) {
-        var dot = new Dot(req.body);
-        dot.save(function(err, data) {
-            if (err) {
-                console.log(err); // for dev only
-                return res.status(500).send('there was an error');
-            }
-            res.json({msg: 'success!'});
-        });
+  
+  app.post('/api/dots', function(req, res) {
+    var dot = new Dot(req.body);
+    dot.save(function(err, data) {
+      if (err) {
+        console.log(err); // for dev only
+        return res.status(500).send('there was an error');
+      }
+      res.json({dot_id: dot._id});
     });
+  });
 };
