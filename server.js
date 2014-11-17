@@ -4,7 +4,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bp = require('body-parser');
-//var passport = require('passport');
+var passport = require('passport');
 var app = express();
 app.use(bp.json());
 
@@ -13,10 +13,10 @@ mongoose.connect(process.env.MONGO_URL ||
                  'mongodb://localhost/hey_you_db');
 app.set('jwtSecret', process.env.JWT_SECRET || 'changethisordie');
 
-//app.use(passport.initialize());
+app.use(passport.initialize());
 
-//require('./lib/passport')(passport);
-//var jwtauth = require('./lib/jwt_auth')(app.get('jwtSecret'));
+require('./lib/passport')(passport);
+var jwtauth = require('./lib/jwt_auth')(app.get('jwtSecret'));
 
 var dotRouter = express.Router();
 //dotRouter.use(jwtauth);
