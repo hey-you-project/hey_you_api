@@ -16,7 +16,7 @@ module.exports = function(app) {
 
     app.get('/api/dots', function(req, res) {
         console.log('PRINTING zone:', req.headers.zone);
-        var zone = JSON.parse(req.headers.zone));
+        var zone = JSON.parse(req.headers.zone);
         /*
         {"latMax":47.61070610565,"longMin":-122.3387206914,"longMax":-122.3254213086,"latMin":47.60171189435}
         */
