@@ -1,5 +1,8 @@
 hey_you_api
 ===========
+
+[![Build Status](https://travis-ci.org/hey-you-project/hey_you_api.svg)](https://travis-ci.org/hey-you-project/hey_you_api)
+
 RESTful server api for hey you
 
 ===========
