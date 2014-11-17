@@ -3,14 +3,15 @@
 
 var mongoose = require('mongoose');
 
-var dotSchema = mongoose.model({
-  location: {},                     // needs to be filled in
-  time: {type: Date, default: Date.now},
+var dotSchema = mongoose.Schema({
+  latitude: Number,
+  longitude: Number,
   color: {type: String, required: true},
   title: {type: String, required: true},
   body: String,
   username_id: {type: String, required: true},
-  comments: []
+  comments: [],
+  time: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('Dot', dotSchema);
