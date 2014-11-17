@@ -21,7 +21,7 @@ var jwtauth = require('./lib/jwt_auth')(app.get('jwtSecret'));
 var dotRouter = express.Router();
 //dotRouter.use(jwtauth);
 
-require('./routes/user_routes')(app);
+require('./routes/user_routes')(app, passport);
 require('./routes/dot_routes')(dotRouter);
 app.use('/v1', dotRouter);
 
