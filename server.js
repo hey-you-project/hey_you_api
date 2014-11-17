@@ -9,7 +9,7 @@ var app = express();
 app.use(bp.json());
 
 mongoose.connect(process.env.MONGO_URL ||
-                 process.env.MONGOLAB_URL ||
+                 process.env.MONGOLAB_URI ||
                  'mongodb://localhost/hey_you_db');
 app.set('jwtSecret', process.env.JWT_SECRET || 'changethisordie');
 
