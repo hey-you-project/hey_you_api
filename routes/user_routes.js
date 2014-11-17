@@ -4,7 +4,7 @@
 var User = require('../models/user');
 
 module.exports = function(app, passport, jwtauth) {
-  app.get('/api/users', /*passport.authenticate('basic', {session: false}),*/ function(req, res) {
+  app.get('/api/users', passport.authenticate('basic', {session: false}), function(req, res) {
     res.json({jwt: req.user.generateToken(app.get('jwtSecret'))});
   });
 
@@ -24,7 +24,7 @@ module.exports = function(app, passport, jwtauth) {
       newUser.basic.password = newUser.generateHash(req.body.password);
       newUser.email = req.body.email;
       newUser.birthday = req.body.birthday;
-      
+
       newUser.save(function(err, data) {
         if (err) return res.status(500).send('server error');
         res.json({jwt: newUser.generateToken(app.get('jwtSecret'))});
