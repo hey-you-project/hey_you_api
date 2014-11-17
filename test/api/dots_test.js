@@ -11,12 +11,12 @@ var appUrl = 'http://localhost:3000'
 
 describe('basic dot CRUD', function(){
   var dotId
-    var zoneHeader = 'zone: {' +
-      '"latMax":47.610,' +
-      '"longMin":-122.338,' +
-      '"longMax":-122.325,' +
-      '"latMin":47.600}'
-  
+  var zoneHeader = 'zone: {' +
+    '"latMax":47.610,' +
+    '"longMin":-122.338,' +
+    '"longMax":-122.325,' +
+    '"latMin":47.600}';
+
   it('should create a dot (POST api/dots)', function(done) {
     chai.request(appUrl)
     .post(apiBase + '/api/dots')
@@ -32,27 +32,25 @@ describe('basic dot CRUD', function(){
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.text).to.not.eql('there was an error');
-      expect(res.body.msg).to.eql('success!');
+      expect(res.body).to.have.property('dot_id');
       //expect username_id to exist in User._Id
       dotId = res.body.dot_id;
       done();
     });
   });
-  
+
   it('should get an individual dot (GET api/dots/:id)', function(done) {
-    dotId = '546a6ab49455ecb49a7eb426'
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + dotId)
     //.set({jwt: jwtToken})
     .end(function(err, res) {
-      console.log(res.body);
       expect(err).to.eql(null);
       expect(res.body.body).to.eql('Nice shoes!!');
       expect(res.body).to.have.property('_id');
       done();
     });
   });
-// example zone header {"latMax":47.610,"longMin":-122.338,"longMax":-122.325,"latMin":47.600}
+
   it('should return an array of dots in a range (GET api/dots)', function () {
     chai.request(appUrl)
     .get(apiBase + '/api/dots')
@@ -63,5 +61,8 @@ describe('basic dot CRUD', function(){
       done();
     });
   });
+  
+  it('should allow original poster to delete dot')
+  it('should allow original poster to get array of their dots')
 
 });

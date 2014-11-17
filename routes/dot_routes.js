@@ -15,7 +15,7 @@ module.exports = function(app) {
     });
 
     app.get('/api/dots/:id', function(req, res) {
-        Dot.find({_id: req.params.id}, function(err, data) {
+        Dot.findOne({_id: req.params.id}, function(err, data) {
             if (err) {
                 console.log(err);
                 return res.status(500).send('there was an error');
