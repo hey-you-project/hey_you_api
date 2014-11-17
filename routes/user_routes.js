@@ -3,7 +3,7 @@
 
 var User = require('../models/user');
 
-module.exports = function(app, passport, jwtauth) {
+module.exports = function(app, passport) {
   app.get('/api/users', passport.authenticate('basic', {session: false}), function(req, res) {
     res.json({jwt: req.user.generateToken(app.get('jwtSecret'))});
   });
