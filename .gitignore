@@ -1,2 +1,6 @@
 node_modules
 npm-debug.log
+db/
+.DS_Store
+**/*.sw?
+.grunt
