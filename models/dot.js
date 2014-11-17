@@ -11,7 +11,7 @@ var dotSchema = mongoose.Schema({
   body: String,
   username_id: {type: String, required: true},
   comments: [],
-  time: {type: Date, default: Date.now}
+  time: Number
 });
 
 module.exports = mongoose.model('Dot', dotSchema);

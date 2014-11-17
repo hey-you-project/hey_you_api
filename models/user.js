@@ -8,7 +8,7 @@ var jwt = require('jwt-simple');
 var userSchema = mongoose.Schema({
   basic: {
     username: String,
-    password: String,
+    password: String
   },
   email: String,
   birthday: Date,
