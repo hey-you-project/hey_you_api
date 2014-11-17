@@ -47,12 +47,13 @@ module.exports = function(app) {
   
   app.post('/api/dots', function(req, res) {
     var dot = new Dot(req.body);
+    dot.time = Date.now();
     dot.save(function(err, data) {
       if (err) {
         console.log(err); // for dev only
         return res.status(500).send('there was an error');
       }
-      res.json({dot_id: dot._id});
+      res.json({dot_id: dot._id, time: dot.time});
     });
   });
 };
