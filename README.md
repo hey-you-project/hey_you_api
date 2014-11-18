@@ -1,16 +1,20 @@
-hey_you_api
-===========
+# Hey You _API_
 
 [![Build Status](https://travis-ci.org/hey-you-project/hey_you_api.svg)](https://travis-ci.org/hey-you-project/hey_you_api)
 
-###RESTful server api for hey you
+###RESTful server api for hey you hosted on [heroku](https://hey-you-api.herokuapp.com)
 
+API address : `https://hey-you-api.herokuapp.com`
+
+Dots
 ===========
 ####Retrieving all dots
 
-GET request to https://hey-you-api.herokuapp.com/api/dots/all
+_**GET**_ /v1/api/dots/all
 
-Returns
+_Returns array of all dot objects_
+
+e.g.
 ```
 [ { _id: '546a554c22a87d56158a54cc',
     latitude: 1,
@@ -47,26 +51,53 @@ Returns
 ===========
 ####Getting zone of dots
 
-GET request to https://hey-you-api.herokuapp.com/api/dots
+_**GET**_ /v1/api/dots
 
-Header should include
-`zone: {"latMax":47.61070610565,"longMin":-122.3387206914,"longMax":-122.3254213086,"latMin":47.60171189435}`
+Headers: `zone: {"latMax":4,"longMin":-1,"longMax":4,"latMin":-1}`
 
-Returns array of dots
+_Returns array of dots_
+
+e.g.
+```
+[{ _id: '546a554c22a87d56158a54cc',
+    latitude: 1,
+    longitude: 2,
+    color: 'green',
+    title: 'hey you with the shoe',
+    body: 'nice shoes',
+    username_id: 'theshoeguy',
+    __v: 0,
+    time: '2014-11-17T20:06:36.231Z',
+    comments: [] },
+  { _id: '546a55da9b1f9e6f159d72a0',
+    latitude: 2,
+    longitude: 3,
+    color: 'red',
+    title: 'hey you in the blue',
+    body: 'thanks',
+    username_id: 'yourfriendlyneighborhoodspiderman',
+    __v: 0,
+    time: '2014-11-17T20:08:58.456Z',
+    comments: [] }]
+```
 
 ===========
 ####Getting dot by id
 
-GET request to https://hey-you-api.herokuapp.com/api/dots/_id
+_**GET**_ /v1/api/dots/_id
 
-Returns single dot with id of _id
+_Returns single dot object with id of _id_
 
 ===========
 ####Creating a dot
 
-POST to https://hey-you-api.herokuapp.com/api/dots
+_**POST**_ /v1/api/dots
 
-json sample to send
+*Requires Auth* 
+
+Headers: `jwt: #token`
+
+Body:
 ```
 {
   "latitude": "30",
@@ -77,3 +108,54 @@ json sample to send
   "username_id": "smokeyjoe"
 }
 ```
+_Returns _id and time_
+
+===========
+####Commenting on a dot
+
+_**PUT**_ /v1/api/dots/_id
+
+*Requires Auth* 
+
+Headers: `jwt: #token`
+
+Body: `{"text": "I like to comment"}`
+
+===========
+####Delete a dot
+
+_**DELETE**_ /v1/api/dots/_id
+
+*Requires Auth* 
+
+Headers: `jwt: #token`
+
+_Removes dot of id _id_
+
+===========
+Users
+===========
+####Create User
+
+_**POST**_ /api/users
+
+Body:
+```
+{
+  "username": "mightyjoe",
+  "password": "joemighty",
+  "birthday": "123456790",
+  "email": "mightjoey@example.com"
+}
+```
+
+_Returns jwt token_
+
+===========
+####Login
+
+_**GET**_ /api/users
+
+`username: "mightyjoe", password: "joemighty"`
+
+_Returns jwt token_
