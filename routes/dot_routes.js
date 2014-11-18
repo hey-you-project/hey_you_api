@@ -49,7 +49,6 @@ module.exports = function(app, jwtAuth) {
   // POSTing a new dot
   app.post('/api/dots', jwtAuth, function(req, res) {
     var dot = new Dot(req.body);
-    console.log('USER:', req.user);
     dot.time = Date.now();
     dot.username_id = req.user.basic.username;
     dot.save(function(err, data) {
