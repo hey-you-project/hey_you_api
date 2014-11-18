@@ -19,7 +19,7 @@ describe('basic dot CRUD', function() {
       '}';
 
   var randomNum = Math.floor(Math.random() * 99999);
-  var randUser = 'fredford' + randomNum;
+  var randUser = 'fred' + randomNum;
   var jwtToken;
 
   before(function(done) {
