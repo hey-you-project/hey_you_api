@@ -47,6 +47,7 @@ module.exports = function(app, jwtAuth) {
   });
 
   // POSTing a new dot
+  // tbd : catching bad json without crashing the server
   app.post('/api/dots', jwtAuth, function(req, res) {
     var dot = new Dot(req.body);
     console.log('USER:', req.user);
