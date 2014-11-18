@@ -13,6 +13,8 @@ Dots
 _**GET**_ /v1/api/dots/all
 
 _Returns array of all dot objects_
+
+e.g.
 ```
 [ { _id: '546a554c22a87d56158a54cc',
     latitude: 1,
@@ -51,11 +53,11 @@ _Returns array of all dot objects_
 
 _**GET**_ /v1/api/dots
 
-Header should include
-
-`zone: {"latMax":4,"longMin":-1,"longMax":4,"latMin":-1}`
+Headers: `zone: {"latMax":4,"longMin":-1,"longMax":4,"latMin":-1}`
 
 _Returns array of dots_
+
+e.g.
 ```
 [{ _id: '546a554c22a87d56158a54cc',
     latitude: 1,
@@ -91,7 +93,11 @@ _Returns single dot object with id of _id_
 
 _**POST**_ /v1/api/dots
 
-*Requires Auth* Headers: {"jwt": _token_}
+*Requires Auth* 
+
+Headers: `jwt: #token`
+
+Body:
 ```
 {
   "latitude": "30",
@@ -109,15 +115,20 @@ _Returns _id and time_
 
 _**PUT**_ /v1/api/dots/_id
 
-*Requires Auth* Headers: {"jwt": _token_}
-`{"text": "I like to comment"}`
+*Requires Auth* 
+
+Headers: `jwt: #token`
+
+Body: `{"text": "I like to comment"}`
 
 ===========
 ####Delete a dot
 
 _**DELETE**_ /v1/api/dots/_id
 
-*Requires Auth* Headers: {"jwt": _token_}
+*Requires Auth* 
+
+Headers: `jwt: #token`
 
 _Removes dot of id _id_
 
@@ -127,6 +138,8 @@ Users
 ####Create User
 
 _**POST**_ /api/users
+
+Body:
 ```
 {
   "username": "mightyjoe",
