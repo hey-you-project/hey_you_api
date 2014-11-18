@@ -56,7 +56,4 @@ describe('basic dot CRUD', function() {
     });
   });
 
-  it('should allow original poster to delete dot');
-  it('should allow original poster to get array of their dots');
-
 });
