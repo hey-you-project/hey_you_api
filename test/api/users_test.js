@@ -8,14 +8,15 @@ require('../../server');
 var expect = chai.expect;
 
 describe('basic user creation and authentcation', function() {
+
   var randomNum = Math.floor(Math.random() * 99999);
-  var randomEmail = 'fredford' + randomNum + '@example.com';
-  var jwtToken = '';
+  var randUser = 'fredford' + randomNum;
+  var jwtToken;
 
   it('should create a new user', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: randomEmail, password: 'foobarfoo'})
+    .send({username: randUser, password: 'foobarfoo'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
@@ -27,19 +28,19 @@ describe('basic user creation and authentcation', function() {
   it('should log in an existing user', function(done) {
     chai.request('http://localhost:3000')
     .get('/api/users')
-    .auth(randomEmail, 'foobarfoo')
+    .auth(randUser, 'foobarfoo')
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
-      //expect(res.body.jwt).to.eql(jwtToken);
+      expect(res.body.jwt).to.eql(jwtToken);
       done();
     });
-  }); 
+  });
 
   it('should not create a duplicate user', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: randomEmail, password: 'foobarfoo', confirm_pass: 'foobarfoo'})
+    .send({username: randUser, password: 'foobarfoo'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.status).to.eql(500);
