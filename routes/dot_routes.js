@@ -47,6 +47,7 @@ module.exports = function(app, jwtAuth) {
   });
 
   // POSTing a new dot
+  // tbd : catching bad json without crashing the server
   app.post('/api/dots', jwtAuth, function(req, res) {
     var dot = new Dot(req.body);
     dot.time = Date.now();
@@ -93,7 +94,6 @@ module.exports = function(app, jwtAuth) {
       time: Date.now()
     };
 
-    console.log('COMMENT:', comment);
     Dot.findOneAndUpdate(
       {_id: req.params.id}, {$push: {comments: comment}},
       function(err) {
