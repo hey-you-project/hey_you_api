@@ -24,6 +24,7 @@ module.exports = function(app, jwtAuth) {
     });
   });
 
+  // GET all dots within lat/long range
   app.get('/api/dots', function(req, res) {
     if (!req.headers.zone) {
       res.status(500).send('expected zone in headers');
@@ -45,6 +46,7 @@ module.exports = function(app, jwtAuth) {
     });
   });
 
+  // POSTing a new dot
   app.post('/api/dots', jwtAuth, function(req, res) {
     var dot = new Dot(req.body);
     console.log('USER:', req.user);
@@ -61,6 +63,7 @@ module.exports = function(app, jwtAuth) {
     });
   });
 
+  // DELETE a dot
   //THIS NEEDS TO CHANGE FROM A REMOVE TO AN ARCHIVE
   app.delete('/api/dots/:id', jwtAuth, function(req, res) {
     Dot.findOne({_id: req.params.id}, function(err, data) {
@@ -83,5 +86,5 @@ module.exports = function(app, jwtAuth) {
   });
 
   //adding user comments
-  //app.post('/api/dots', 
+  //app.post('/api/dots',
 };
