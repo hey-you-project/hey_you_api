@@ -3,10 +3,10 @@ hey_you_api
 
 [![Build Status](https://travis-ci.org/hey-you-project/hey_you_api.svg)](https://travis-ci.org/hey-you-project/hey_you_api)
 
-RESTful server api for hey you
+###RESTful server api for hey you
 
 ===========
-Retrieving all dots
+####Retrieving all dots
 
 GET request to https://hey-you-api.herokuapp.com/api/dots/all
 
@@ -45,7 +45,7 @@ Returns
 ```
 
 ===========
-Getting zone of dots
+####Getting zone of dots
 
 GET request to https://hey-you-api.herokuapp.com/api/dots
 
@@ -55,14 +55,14 @@ Header should include
 Returns array of dots
 
 ===========
-Getting dot by id
+####Getting dot by id
 
 GET request to https://hey-you-api.herokuapp.com/api/dots/_id
 
 Returns single dot with id of _id
 
 ===========
-Creating a dot
+####Creating a dot
 
 POST to https://hey-you-api.herokuapp.com/api/dots
 
