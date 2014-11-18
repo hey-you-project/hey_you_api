@@ -14,7 +14,7 @@ module.exports = function(app, passport) {
       if (user) return res.status(500).send('cannot create that user');
 
       // username validation
-      if (req.body.username > 12) {
+      if (req.body.username.length > 12) {
         return res.status('500').send('invalid username');
       }
 
