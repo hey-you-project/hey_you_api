@@ -45,6 +45,23 @@ Returns
 ```
 
 ===========
+Getting zone of dots
+
+GET request to https://hey-you-api.herokuapp.com/api/dots
+
+Header should include
+`zone: {"latMax":47.61070610565,"longMin":-122.3387206914,"longMax":-122.3254213086,"latMin":47.60171189435}`
+
+Returns array of dots
+
+===========
+Getting dot by id
+
+GET request to https://hey-you-api.herokuapp.com/api/dots/_id
+
+Returns single dot with id of _id
+
+===========
 Creating a dot
 
 POST to https://hey-you-api.herokuapp.com/api/dots
