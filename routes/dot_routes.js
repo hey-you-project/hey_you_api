@@ -52,8 +52,6 @@ module.exports = function(app, jwtAuth) {
     console.log('USER:', req.user);
     dot.time = Date.now();
     dot.username_id = req.user.basic.username;
-    console.log('DOT:', dot);
-    console.log('BODY:', req.body);
     dot.save(function(err, data) {
       if (err) {
         console.log(err); // for dev only
@@ -85,6 +83,26 @@ module.exports = function(app, jwtAuth) {
     });
   });
 
-  //adding user comments
-  //app.post('/api/dots',
+  // PUT adding user comments
+  app.put('/api/dots/:id', jwtAuth, function(req, res) {
+    if (!req.body.text) {
+      return res.status(401).send('requires a message');
+    }
+    var comment = {
+      username: req.user.basic.username,
+      text: req.body.text,
+      time: Date.now()
+    };
+
+    console.log('COMMENT:', comment);
+    Dot.findOneAndUpdate(
+      {_id: req.params.id}, {$push: {comments: comment}},
+      function(err) {
+        if (err) {
+          console.log(err);
+          return res.status(500).send('there was an error');
+        }
+        res.json({msg: 'success!'});
+      });
+  });
 };
