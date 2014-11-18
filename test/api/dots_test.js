@@ -18,10 +18,27 @@ describe('basic dot CRUD', function() {
     '"longMax": -122.32' + 
     '}';
 
+  var randomNum = Math.floor(Math.random() * 99999);
+  var randUser = 'fredford' + randomNum;
+  var jwtToken;
+
+  before(function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/users')
+    .send({username: randUser, password: 'foobarfoo'})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body).to.have.property('jwt');
+      jwtToken = res.body.jwt;
+      done();
+    });
+  });
+
+
   it('should create a dot (POST api/dots)', function(done) {
     chai.request(appUrl)
     .post(apiBase + '/api/dots')
-    //.set({jwt: jwtToken})
+    .set({jwt: jwtToken})
     .send({latitude: "47.61", longitude: "-122.33", color: "blue", title: "Hey you, with the fancy shoes", body: "Nice shoes!!", username_id: "22489701"})
     .end(function(err, res) {
       expect(err).to.eql(null);
@@ -36,7 +53,6 @@ describe('basic dot CRUD', function() {
   it('should get an individual dot (GET api/dots/:id)', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + dotId)
-    //.set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.body).to.eql('Nice shoes!!');
@@ -52,6 +68,17 @@ describe('basic dot CRUD', function() {
     .end(function(err, res) {
       expect(err).to.eql(null);
       //expect(res.body).to.be.an(Array);
+      done();
+    });
+  });
+  
+  it('should allow an original poster to delete their dot (DELETE api/dots/:id)', function(done) {
+    chai.request(appUrl)
+    .delete(apiBase + '/api/dots/' + dotId)
+    .set({jwt: jwtToken})
+    .end(function(err, res){
+      expect(err).to.eql(null);
+      expect(res.body.msg).to.eql('success!');
       done();
     });
   });
