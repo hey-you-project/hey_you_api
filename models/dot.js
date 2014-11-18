@@ -9,7 +9,7 @@ var dotSchema = mongoose.Schema({
   color: {type: String, required: true},
   title: {type: String, required: true},
   body: String,
-  username_id: {type: String, required: true},
+  username_id: String,
   comments: [],
   time: Number
 });

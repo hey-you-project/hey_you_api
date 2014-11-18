@@ -3,7 +3,7 @@
 
 var Dot = require('../models/dot');
 
-module.exports = function(app) {
+module.exports = function(app, jwtAuth) {
   app.get('/api/dots/all', function(req, res) {
     Dot.find({}, function(err, data) {
       if (err) {
@@ -35,18 +35,23 @@ module.exports = function(app) {
     */
     Dot.find({latitude:{ $gt: zone.latMin, $lt: zone.latMax},
               longitude: {$gt: zone.longMin, $lt: zone.longMax}},
-              function(err, data) {
-                if (err) {
-                  console.log(err);
-                  return res.status(500).send('there was an error');
-                }
-                res.json(data);
-              });
+             function(err, data) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send('there was an error');
+      }
+      // should no send raw schema data, but instead should be parsed
+      res.json(data);
+    });
   });
 
-  app.post('/api/dots', function(req, res) {
+  app.post('/api/dots', jwtAuth, function(req, res) {
     var dot = new Dot(req.body);
+    console.log('USER:', req.user);
     dot.time = Date.now();
+    dot.username_id = req.user.basic.username;
+    console.log('DOT:', dot);
+    console.log('BODY:', req.body);
     dot.save(function(err, data) {
       if (err) {
         console.log(err); // for dev only
@@ -55,4 +60,28 @@ module.exports = function(app) {
       res.json({dot_id: dot._id, time: dot.time});
     });
   });
+
+  //THIS NEEDS TO CHANGE FROM A REMOVE TO AN ARCHIVE
+  app.delete('/api/dots/:id', jwtAuth, function(req, res) {
+    Dot.findOne({_id: req.params.id}, function(err, data) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send('there was an error');
+      }
+      if (data.username_id !== req.user.basic.username) {
+        res.send(401).send('cannot delete this dot');
+      }
+      // tbc
+      Dot.remove({_id: req.params.id}, function(err, data) {
+        if (err) {
+          console.log(err);
+          return res.status(500).send('there was an error');
+        }
+        res.json({msg: 'success!'});
+      });
+    });
+  });
+
+  //adding user comments
+  //app.post('/api/dots', 
 };
