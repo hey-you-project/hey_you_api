@@ -12,11 +12,11 @@ var appUrl = 'http://localhost:3000';
 describe('basic dot CRUD', function() {
   var dotId;
   var zoneData = '{' +
-    '"latMin": 47.60,' +
-    '"latMax": 47.62,' +
-    '"longMin": -122.34,' +
-    '"longMax": -122.32' + 
-    '}';
+      '"latMin": 47.60,' +
+      '"latMax": 47.62,' +
+      '"longMin": -122.34,' +
+      '"longMax": -122.32' +
+      '}';
 
   var randomNum = Math.floor(Math.random() * 99999);
   var randUser = 'fredford' + randomNum;
@@ -33,7 +33,6 @@ describe('basic dot CRUD', function() {
       done();
     });
   });
-
 
   it('should create a dot (POST api/dots)', function(done) {
     chai.request(appUrl)
@@ -71,16 +70,38 @@ describe('basic dot CRUD', function() {
       done();
     });
   });
-  
-  it('should allow an original poster to delete their dot (DELETE api/dots/:id)', function(done) {
+
+  //  it('should allow an original poster to delete their dot (DELETE api/dots/:id)', function(done) {
+  //    chai.request(appUrl)
+  //    .delete(apiBase + '/api/dots/' + dotId)
+  //    .set({jwt: jwtToken})
+  //    .end(function(err, res) {
+  //      expect(err).to.eql(null);
+  //      expect(res.body.msg).to.eql('success!');
+  //      done();
+  //    });
+  //  });
+
+  it('should allow users to post comments on their own dot', function(done) {
     chai.request(appUrl)
-    .delete(apiBase + '/api/dots/' + dotId)
+    .put(apiBase + '/api/dots/' + dotId)
     .set({jwt: jwtToken})
-    .end(function(err, res){
+    .send({text: "this is a text comment"})
+    .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('success!');
       done();
     });
   });
 
+  it('should get check to see if that comment was pushed (GET api/dots/:id)', function(done) {
+    chai.request(appUrl)
+    .get(apiBase + '/api/dots/' + dotId)
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body).to.have.property('_id');
+      expect(res.body.comments[0].text).to.eql('this is a text comment');
+      done();
+    });
+  });
 });

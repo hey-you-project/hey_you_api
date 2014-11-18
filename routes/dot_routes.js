@@ -94,7 +94,6 @@ module.exports = function(app, jwtAuth) {
       time: Date.now()
     };
 
-    console.log('COMMENT:', comment);
     Dot.findOneAndUpdate(
       {_id: req.params.id}, {$push: {comments: comment}},
       function(err) {
