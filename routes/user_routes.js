@@ -13,10 +13,20 @@ module.exports = function(app, passport) {
       if (err) return res.status(500).send('server error');
       if (user) return res.status(500).send('cannot create that user');
 
+      // username validation
+      if (req.body.username > 12) {
+        return res.status('500').send('invalid username');
+      }
+
       // password confirmation/validation
       if (!req.body.password) return res.status(500).send('please provide password');
       if (req.body.password.length < 6) {
         return res.status(500).send('invalid password');
+      }
+
+      // age validation, 31556926000 = 18 years
+      if (req.body.birthday > Date.now() - 31556926000) {
+        return res.status(401).send('unauthorized');
       }
 
       var newUser = new User();

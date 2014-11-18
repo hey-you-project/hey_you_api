@@ -7,10 +7,10 @@ require('../../server');
 
 var expect = chai.expect;
 var apiBase = '/v1';
-var appUrl = 'http://localhost:3000'
+var appUrl = 'http://localhost:3000';
 
 describe('basic dot CRUD', function(){
-  var dotId
+  var dotId;
   var zoneHeader = 'zone: {' +
     '"latMax":47.610,' +
     '"longMin":-122.338,' +
@@ -57,12 +57,12 @@ describe('basic dot CRUD', function(){
     .set(zoneHeader)
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body).to.be.an(Array);
+      expect(res.body).to.be.an('Array');
       done();
     });
   });
   
-  it('should allow original poster to delete dot')
-  it('should allow original poster to get array of their dots')
+  it('should allow original poster to delete dot');
+  it('should allow original poster to get array of their dots');
 
 });
