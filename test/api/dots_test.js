@@ -51,18 +51,6 @@ describe('basic dot CRUD', function(){
     });
   });
 
-<<<<<<< HEAD
-  it('should return an array of dots in a range (GET api/dots)', function () {
-    chai.request(appUrl)
-    .get(apiBase + '/api/dots')
-    .set(zoneHeader)
-    .end(function(err, res) {
-      expect(err).to.eql(null);
-      expect(res.body).to.be.an('Array');
-      done();
-    });
-  });
-=======
   // it('should return an array of dots in a range (GET api/dots)', function (done) {
   //   chai.request(appUrl)
   //   .get(apiBase + '/api/dots')
@@ -75,7 +63,6 @@ describe('basic dot CRUD', function(){
   //     done();
   //   });
   // });
->>>>>>> 9227d6935246167552f5074835b3e96329677b3d
   
   it('should allow original poster to delete dot');
   it('should allow original poster to get array of their dots');
