@@ -3,6 +3,7 @@
 
 var Dot = require('../models/dot');
 var User = require('../models/user'); // for mydots
+var eachAsync = require('each-async'); // for mydots
 
 module.exports = function(app, jwtAuth) {
   // get all dots
@@ -16,6 +17,29 @@ module.exports = function(app, jwtAuth) {
     });
   });
 
+  // get dots for user
+  app.get('/api/dots/mydots', jwtAuth, function(req, res) {
+    User.findOne({_id: req.user._id})
+    .populate('mydots')
+    .exec(function(err, user) {
+      if (err) return res.status(500).send('cannot get your dots');
+      res.json(user.mydots);
+    });
+  });
+
+    /*var dots = [];
+    console.log(req.user.mydots);
+    eachAsync(req.user.mydots, function(dotId, index, callback) {
+      console.log(dotId);
+      Dot.findOne({_id: dotId}, function(err, data) {
+        if (err) return res.status(500).send('cannot get your dots');
+        dots.push(data);
+      });
+      callback();
+    }, function(err) {
+      res.json(dots);
+    });*/
+
   // get single dot by id
   app.get('/api/dots/:id', function(req, res) {
     Dot.findOne({_id: req.params.id}, function(err, data) {
@@ -25,23 +49,6 @@ module.exports = function(app, jwtAuth) {
       }
       res.json(data);
     });
-  });
-
-  // get dots for user
-  app.get('/api/dots/mydots', jwtAuth, function(req, res) {
-    var dots = [];
-    console.log(req.user.mydots);
-    req.user.mydots.forEach(function(dotId) {
-      console.log(dotId);
-      Dot.findOne({_id: dotId}, function(err, data) {
-        if (err) return res.status(500).send('cannot get your dots');
-        dots.push(data);
-      });
-    });
-    console.log(dots);
-    // var expired = [];
-    // expiredDots.findOne // will have to implement in err of Dot find one
-    res.json(dots);
   });
 
   // GET all dots within lat/long range
@@ -80,13 +87,13 @@ module.exports = function(app, jwtAuth) {
       }
 
       // add id of created dot to user
-      User.findOneAndUpdate({_id: req.user._id}, {$push: {mydots: dot._id}}, function(err, data) {
-        if (err) {
-          console.log(err);
-          return res.status(500).send('could not post');
-        }
-        console.log(data.mydots);
-      });
+      User.findOneAndUpdate(
+        {_id: req.user._id}, {$push: {mydots: dot._id}}, function(err, data) {
+          if (err) {
+            console.log(err);
+            return res.status(500).send('could not post');
+          }
+        });
       res.json({dot_id: dot._id, time: dot.time});
     });
   });

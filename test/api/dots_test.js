@@ -49,6 +49,17 @@ describe('basic dot CRUD', function() {
     });
   });
 
+  it('should add a created dot to mydots', function(done) {
+    chai.request(appUrl)
+    .get(apiBase + '/api/dots/mydots')
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body).to.be.an('Array');
+      done();
+    });
+  });
+
   it('should get an individual dot (GET api/dots/:id)', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + dotId)
@@ -104,17 +115,4 @@ describe('basic dot CRUD', function() {
       done();
     });
   });
-/*
-
-  it('should add a created dot to mydots', function(done) {
-    chai.request(appUrl)
-    .get(apiBase + '/api/dots/mydots')
-    .set({jwt: jwtToken})
-    .end(function(err, res) {
-      expect(err).to.eql(null);
-      //expect(res.body).to.be.an(Array);
-      done();
-    });
-  });
-*/
 });

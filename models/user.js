@@ -13,7 +13,7 @@ var userSchema = mongoose.Schema({
   email: String,
   birthday: Number,
   creationDate: Number,
-  mydots: [],
+  mydots: [{type: mongoose.Schema.Types.ObjectId, ref: 'Dot'}],
   starred: [],
   commented: []
 });
