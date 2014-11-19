@@ -9,12 +9,12 @@ module.exports = function(app, passport) {
   });
 
   app.post('/api/users', function(req, res) {
-    User.findOne({'basic.username': req.body.username}, function(err, user) {
+    User.findOne({'basic.username': new RegExp('^' + req.body.username + '$', 'i')}, function(err, user) {
       if (err) return res.status(500).send('server error');
       if (user) return res.status(500).send('cannot create that user');
 
       // username validation
-      if (req.body.username.length > 12) {
+      if (req.body.username.length > 12 || req.body.username.length < 3) {
         return res.status('500').send('invalid username');
       }
 
