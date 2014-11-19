@@ -25,7 +25,7 @@ describe('basic dot CRUD', function() {
   before(function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({username: randUser, password: 'foobarfoo'})
+    .send({username: randUser, password: 'foobarfoo', birthday: 1, email: 'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
@@ -94,7 +94,7 @@ describe('basic dot CRUD', function() {
     });
   });
 
-  it('should get check to see if that comment was pushed (GET api/dots/:id)', function(done) {
+  it('should check to see if that comment was pushed (GET api/dots/:id)', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + dotId)
     .end(function(err, res) {
@@ -104,4 +104,17 @@ describe('basic dot CRUD', function() {
       done();
     });
   });
+/*
+
+  it('should add a created dot to mydots', function(done) {
+    chai.request(appUrl)
+    .get(apiBase + '/api/dots/mydots')
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      //expect(res.body).to.be.an(Array);
+      done();
+    });
+  });
+*/
 });

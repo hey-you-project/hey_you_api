@@ -11,8 +11,11 @@ var userSchema = mongoose.Schema({
     password: String
   },
   email: String,
-  birthday: Date,
-  creationDate: Number
+  birthday: Number,
+  creationDate: Number,
+  mydots: [],
+  starred: [],
+  commented: []
 });
 
 userSchema.methods.generateHash = function(password) {
