@@ -13,22 +13,10 @@ describe('basic user creation and authentcation', function() {
   var randUser = 'fred' + randomNum;
   var jwtToken;
 
-  it('should create a new user', function(done) {
-    chai.request('http://localhost:3000')
-    .post('/api/users')
-    .send({username: randUser, password: 'foobarfoo'})
-    .end(function(err, res) {
-      expect(err).to.eql(null);
-      expect(res.body).to.have.property('jwt');
-      jwtToken = res.body.jwt;
-      done();
-    });
-  });
-
   it('should deny long usernames', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({username: 'thisnameisjustmuchtoolong', password: 'foobarfoo'})
+    .send({username: 'thisnameisjustmuchtoolong', password: 'foobarfoo', birthday: 0, email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res).to.have.status(500);
@@ -39,7 +27,7 @@ describe('basic user creation and authentcation', function() {
   it('should deny short passwords', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({username: randUser, password: 'foob'})
+    .send({username: randUser, password: 'foob', birthday: 0, email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res).to.have.status(500);
@@ -50,6 +38,50 @@ describe('basic user creation and authentcation', function() {
   it('should deny young people', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
+    .send({username: randUser, password: 'foob', birthday: Date.now(), email:'test@example.com'})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
+
+  it('should deny no username', function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/users')
+    .send({password: 'foob', birthday: Date.now(), email:'test@example.com'})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
+
+  it('should deny no password', function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/users')
+    .send({username: randUser, birthday: Date.now(), email:'test@example.com'})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
+
+  it('should deny no birthday', function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/users')
+    .send({username: randUser, password: 'foob', email:'test@example.com'})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
+
+  it('should deny no email', function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/users')
     .send({username: randUser, password: 'foob', birthday: Date.now()})
     .end(function(err, res) {
       expect(err).to.eql(null);
@@ -58,13 +90,37 @@ describe('basic user creation and authentcation', function() {
     });
   });
 
-  it('should deny already existing users', function(done) {
+  it('should create a new user with valid info', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({username: randUser, password: 'foobarfoo'})
+    .send({username: randUser, password: 'foobarfoo', birthday: 0, email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res).to.have.status(500);
+      expect(res.body).to.have.property('jwt');
+      jwtToken = res.body.jwt;
+      done();
+    });
+  });
+
+  it('should allow birthday of 0 in UNIX time(January 1, 1970)', function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/users')
+    .send({username: randUser + '1', password: 'foobarfoo', birthday: 0, email:'test@example.com'})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body).to.have.property('jwt');
+      done();
+    });
+  });
+
+  it('should not create a duplicate user', function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/users')
+    .send({username: randUser, password: 'foobarfoo', birthday: 0, email:'test@example.com'})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.status).to.eql(500);
+      expect(res.text).to.eql('cannot create that user');
       done();
     });
   });
@@ -88,18 +144,6 @@ describe('basic user creation and authentcation', function() {
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res).to.have.status(500);
-      done();
-    });
-  });
-
-  it('should not create a duplicate user', function(done) {
-    chai.request('http://localhost:3000')
-    .post('/api/users')
-    .send({username: randUser, password: 'foobarfoo'})
-    .end(function(err, res) {
-      expect(err).to.eql(null);
-      expect(res.status).to.eql(500);
-      expect(res.text).to.eql('cannot create that user');
       done();
     });
   });
