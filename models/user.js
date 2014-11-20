@@ -14,7 +14,7 @@ var userSchema = mongoose.Schema({
   birthday: Number,
   creationDate: Number,
   agreed_tos: {
-    tos_id: ObjectID,
+    tos_id: mongoose.Schema.Types.ObjectId,
     version: String,
     agree_date: Number
   }

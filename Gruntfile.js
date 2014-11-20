@@ -20,7 +20,8 @@ module.exports = function(grunt) {
 
     simplemocha: {
       src: ['test/api/users_test.js', 
-      'test/api/dots_test.js']
+      'test/api/dots_test.js',
+      'test/api/tos_test.js']
     }
   });
 
