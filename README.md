@@ -137,8 +137,8 @@ _Returns jwt token_
 ===========
 Authenticated Routes
 ===========
-
 *Requires Auth* Headers: `jwt: alkvnpefTHISdfaibISbvrawfAaweifjFAKEalskdfwaoHASHoiouaslfjakwjef`
+
 ===========
 ####Creating a dot
 
