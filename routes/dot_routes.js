@@ -4,7 +4,6 @@
 var Dot = require('../models/dot');
 var Comment = require('../models/comment');
 var Star = require('../models/star');
-var _ = require('underscore');
 
 module.exports = function(app, jwtAuth) {
   // get all dots
