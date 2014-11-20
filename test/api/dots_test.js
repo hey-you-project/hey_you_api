@@ -71,6 +71,16 @@ describe('basic dot CRUD', function() {
     });
   });
 
+    it('should handle getting a dot that DNE', function(done) {
+    chai.request(appUrl)
+    .get(apiBase + '/api/dots/' + 1234567890)
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
+
   it('should return an array of dots in a range (GET api/dots)', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots')
@@ -81,17 +91,6 @@ describe('basic dot CRUD', function() {
       done();
     });
   });
-
-  //  it('should allow an original poster to delete their dot (DELETE api/dots/:id)', function(done) {
-  //    chai.request(appUrl)
-  //    .delete(apiBase + '/api/dots/' + dotId)
-  //    .set({jwt: jwtToken})
-  //    .end(function(err, res) {
-  //      expect(err).to.eql(null);
-  //      expect(res.body.msg).to.eql('success!');
-  //      done();
-  //    });
-  //  });
 
   it('should allow users to post comments on their own dot', function(done) {
     chai.request(appUrl)
@@ -112,6 +111,28 @@ describe('basic dot CRUD', function() {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('_id');
       expect(res.body.comments[0].text).to.eql('this is a text comment');
+      expect(res.body.comments[0].username).to.eql(randUser);
+      done();
+    });
+  });
+
+  it('should allow an original poster to delete their dot (DELETE api/dots/:id)', function(done) {
+    chai.request(appUrl)
+    .delete(apiBase + '/api/dots/' + dotId)
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body.id).to.eql(dotId);
+      done();
+    });
+  });
+  
+  it('should not be able to get a deleted dot', function(done) {
+    chai.request(appUrl)
+    .get(apiBase + '/api/dots/' + dotId)
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(500);
       done();
     });
   });
