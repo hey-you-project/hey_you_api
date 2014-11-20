@@ -31,18 +31,18 @@ module.exports = function(app, jwtAuth) {
     });
   });
 
-  // // for creating new ToS
-  // app.post('/api/tos/new', function(req, res) {
-  //   var tos = new Tos;
-  //   tos.html = '<h1>hello world</h1>';
-  //   tos.version = '1.0';
-  //   tos.post_date = 1388534400;
-  //   tos.save(function(err, data) {
-  //     if (err) {
-  //       console.log(err); // for dev only
-  //       return res.status(500).send('there was an error');
-  //     }
-  //     res.json(data);
-  //   });
-  // })
+  // for creating new ToS in travis
+  app.post('/api/tos/new', function(req, res) {
+    var tos = new Tos();
+    tos.html = '<h1>hello world</h1>';
+    tos.version = '1.0';
+    tos.post_date = 1388534400;
+    tos.save(function(err, data) {
+      if (err) {
+        console.log(err); // for dev only
+        return res.status(500).send('there was an error');
+      }
+      res.json(data);
+    });
+  });
 };

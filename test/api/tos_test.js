@@ -25,13 +25,12 @@ describe('basic ToS agreement mechanism', function() {
       done();
     });
 
-    // // for creating a test ToS, uncomment route too
-    // chai.request(appUrl)
-    // .post('/api/tos/new')
-    // .send()
-    // .end(function(err, res) {
-    //   console.log(res.body)
-    // });
+    // for creating a test ToS in travis, uncomment route too
+    chai.request(appUrl)
+    .post('/api/tos/new')
+    .send()
+    .end(function(err, res) {
+    });
   });
 
   it('should get latest ToS', function(done) {
