@@ -35,14 +35,15 @@ module.exports = function(app, jwtAuth) {
       }
       var dot = data.toObject();
       Comment.find({dot_id: req.params.id})
-        .exec(function(err, comments) {
-          if (err) {
-            console.log(err);
-            return res.status(500).send('cannot retrieve comments');
-          }
-          dot.comments = comments;
-          res.json(dot);
-        });
+      .sort('timestamp')
+      .exec(function(err, comments) {
+        if (err) {
+          console.log(err);
+          return res.status(500).send('cannot retrieve comments');
+        }
+        dot.comments = comments;
+        res.json(dot);
+      });
     });
   });
 
