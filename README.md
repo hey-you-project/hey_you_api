@@ -21,6 +21,7 @@ _Returns array of all dot objects_
         "username": "testman",
         "time": 1416445071063,
         "title": "HEY SEATTLE",
+        "color": "blue",
         "latitude": 47.623,
         "longitude": -122.333,
         "post": "download this app!",
@@ -34,6 +35,7 @@ _Returns array of all dot objects_
         "username": "testman",
         "time": 1416445071064,
         "title": "YO",
+        "color": "green",
         "latitude": 47.312,
         "longitude": -122.373,
         "post": "this is awesome!",
@@ -60,6 +62,7 @@ _Returns array of dots in zone_
         "username": "testman",
         "time": 1416445071063,
         "title": "HEY SEATTLE",
+        "color": "blue",
         "latitude": 47.623,
         "longitude": -122.333,
         "post": "download this app!",
@@ -83,6 +86,7 @@ _Returns single dot object of given id and comments_
     "username": "testman",
     "time": 1416445071063,
     "title": "HEY SEATTLE",
+    "color": "blue",
     "latitude": 47.623,
     "longitude": -122.333,
     "post": "download this app!",
@@ -187,6 +191,7 @@ _Returns array of dots for that user_
         "username": "testman",
         "time": 1416445071063,
         "title": "HEY SEATTLE",
+        "color": "blue",
         "latitude": 47.623,
         "longitude": -122.333,
         "post": "download this app!",
@@ -200,6 +205,7 @@ _Returns array of dots for that user_
         "username": "testman",
         "time": 1416445071064,
         "title": "YO",
+        "green": "green",
         "latitude": 47.312,
         "longitude": -122.373,
         "post": "this is awesome!",
@@ -210,8 +216,15 @@ _Returns array of dots for that user_
 ]
 ```
 ===========
-####Delete a dot - *NOT TESTED*
+####Delete a dot
 
 _**DELETE**_ /v1/api/dots/_id
 
 _Removes dot of id _id_
+
+===========
+####Delete a comment
+
+_**DELETE**_ /v1/api/comments/_id
+
+_Removes comment of id _id_
