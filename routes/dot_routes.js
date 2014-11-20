@@ -52,14 +52,15 @@ module.exports = function(app, jwtAuth) {
         }
       });
       Comment.find({dot_id: req.params.id})
-        .exec(function(err, comments) {
-          if (err) {
-            console.log(err);
-            return res.status(500).send('cannot retrieve comments');
-          }
-          dot.comments = comments;
-          res.json(dot);
-        });
+      .sort('timestamp')
+      .exec(function(err, comments) {
+        if (err) {
+          console.log(err);
+          return res.status(500).send('cannot retrieve comments');
+        }
+        dot.comments = comments;
+        res.json(dot);
+      });
     });
   });
 
@@ -95,6 +96,7 @@ module.exports = function(app, jwtAuth) {
       dot.longitude = req.body.longitude;
       dot.latitude = req.body.latitude;
       dot.title = req.body.title;
+      dot.color = req.body.color;
       dot.time = Date.now();
       dot.username = req.user.basic.username;
       dot.user_id = req.user._id;
@@ -113,9 +115,13 @@ module.exports = function(app, jwtAuth) {
   // DELETE a dot
   //THIS NEEDS TO CHANGE FROM A REMOVE TO AN ARCHIVE
   app.delete('/api/dots/:id', jwtAuth, function(req, res) {
-    Dot.remove({_id:req.params.id, user_id: req.user._id}, function(err) {
+    Dot.remove({_id:req.params.id, user_id: req.user._id}, function(err, num) {
       if (err) return res.status(500).send('cannot delete');
-      res.json({msg: 'success!'});
+      if (num !== 0) {
+        res.json({msg: 'success!'});
+      } else {
+        res.json({msg: 'cannot delete'});
+      }
     });
     /*Dot.findOneAndUpdate({_id: req.params.id, hidden:false, user_id: req.user._id}, {hidden: true}, function(err, data) {
       if (err) {
