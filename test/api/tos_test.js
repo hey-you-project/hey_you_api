@@ -34,7 +34,6 @@ describe('basic ToS agreement mechanism', function() {
     // });
   });
 
-
   it('should get latest ToS', function(done) {
     chai.request(appUrl)
     .get('/api/tos/latest')
@@ -42,6 +41,20 @@ describe('basic ToS agreement mechanism', function() {
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('version');
+      tosId = res.body._id;
+      tosVer = res.body.version;
+      done();
+    });
+  });
+  
+  it('should save when user agrees to ToS', function(done) {
+    chai.request(appUrl)
+    .patch('/api/tos/agreed')
+    .set({jwt: jwtToken})
+    .send({tos_id: tosId, version: tosVer})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.text).to.eql('agreement updated');
       done();
     });
   });
