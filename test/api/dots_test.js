@@ -38,7 +38,7 @@ describe('basic dot CRUD', function() {
     chai.request(appUrl)
     .post(apiBase + '/api/dots')
     .set({jwt: jwtToken})
-    .send({latitude: "47.61", longitude: "-122.33", color: "blue", title: "Hey you, with the fancy shoes", body: "Nice shoes!!", username_id: "22489701"})
+    .send({latitude: "47.61", longitude: "-122.33", color: "blue", title: "Hey you, with the fancy shoes", post: "Nice shoes!!", username_id: "22489701"})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.text).to.not.eql('there was an error');
@@ -65,7 +65,7 @@ describe('basic dot CRUD', function() {
     .get(apiBase + '/api/dots/' + dotId)
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.body).to.eql('Nice shoes!!');
+      expect(res.body.post).to.eql('Nice shoes!!');
       expect(res.body).to.have.property('_id');
       done();
     });
@@ -95,12 +95,12 @@ describe('basic dot CRUD', function() {
 
   it('should allow users to post comments on their own dot', function(done) {
     chai.request(appUrl)
-    .put(apiBase + '/api/dots/' + dotId)
+    .post(apiBase + '/api/comments/' + dotId)
     .set({jwt: jwtToken})
     .send({text: "this is a text comment"})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.msg).to.eql('success!');
+      expect(res.body).to.eql('this is a text comment');
       done();
     });
   });

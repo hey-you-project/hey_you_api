@@ -4,10 +4,13 @@
 var mongoose = require('mongoose');
 
 var messageSchema = mongoose.Schema({
-  from: 'ObjectId', //{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  to: 'ObjectId', //{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  messageBody: String,
-  time: {type: Date, default: Date.now}
+  to_user_id: mongoose.Schema.Types.ObjectId,
+  to_username: String,
+  from_user_id: mongoose.Schema.Types.ObjectId,
+  from_username: String,
+  text: String,
+  timestamp: Number,
+  read: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('Message', messageSchema);
