@@ -8,44 +8,40 @@ API address : `https://hey-you-api.herokuapp.com`
 
 Dots
 ===========
-####Retrieving all dots
+####Retrieving all dots - *TEMPORARY*
 
 _**GET**_ /v1/api/dots/all
 
 _Returns array of all dot objects_
-
-e.g.
 ```
-[ { _id: '546a554c22a87d56158a54cc',
-    latitude: 1,
-    longitude: 2,
-    color: 'green',
-    title: 'hey you with the shoe',
-    body: 'nice shoes',
-    username_id: 'theshoeguy',
-    __v: 0,
-    time: '2014-11-17T20:06:36.231Z',
-    comments: [] },
-  { _id: '546a55da9b1f9e6f159d72a0',
-    latitude: 2,
-    longitude: 3,
-    color: 'red',
-    title: 'hey you in the blue',
-    body: 'thanks',
-    username_id: 'yourfriendlyneighborhoodspiderman',
-    __v: 0,
-    time: '2014-11-17T20:08:58.456Z',
-    comments: [] },
-  { _id: '546a565b9b1f9e6f159d72a1',
-    latitude: 20,
-    longitude: 30,
-    color: 'purple',
-    title: 'sup brah',
-    body: 'howzit',
-    username_id: 'braddah',
-    __v: 0,
-    time: '2014-11-17T20:11:07.100Z',
-    comments: [] } ]
+[
+    {
+        "_id": "324comment1id2348790",
+        "user_id": "101testmanid010",
+        "username": "testman",
+        "time": 1416445071063,
+        "title": "HEY SEATTLE",
+        "latitude": 47.623,
+        "longitude": -122.333,
+        "post": "download this app!",
+        "__v": 0,
+        "hidden": false,
+        "stars": []
+    },
+    {
+        "_id": "203comment2id092384",
+        "user_id": "101testmanid010",
+        "username": "testman",
+        "time": 1416445071064,
+        "title": "YO",
+        "latitude": 47.312,
+        "longitude": -122.373,
+        "post": "this is awesome!",
+        "__v": 0,
+        "hidden": false,
+        "stars": []
+    }
+]
 ```
 
 ===========
@@ -53,87 +49,60 @@ e.g.
 
 _**GET**_ /v1/api/dots
 
-Headers: `zone: {"latMax":4,"longMin":-1,"longMax":4,"latMin":-1}`
+Headers: `zone: {"latMax":50,"longMin":-125,"longMax":-120,"latMin":45}`
 
-_Returns array of dots_
-
-e.g.
+_Returns array of dots in zone_
 ```
-[{ _id: '546a554c22a87d56158a54cc',
-    latitude: 1,
-    longitude: 2,
-    color: 'green',
-    title: 'hey you with the shoe',
-    body: 'nice shoes',
-    username_id: 'theshoeguy',
-    __v: 0,
-    time: '2014-11-17T20:06:36.231Z',
-    comments: [] },
-  { _id: '546a55da9b1f9e6f159d72a0',
-    latitude: 2,
-    longitude: 3,
-    color: 'red',
-    title: 'hey you in the blue',
-    body: 'thanks',
-    username_id: 'yourfriendlyneighborhoodspiderman',
-    __v: 0,
-    time: '2014-11-17T20:08:58.456Z',
-    comments: [] }]
+[
+    {
+        "_id": "324comment1id2348790",
+        "user_id": "101testmanid010",
+        "username": "testman",
+        "time": 1416445071063,
+        "title": "HEY SEATTLE",
+        "latitude": 47.623,
+        "longitude": -122.333,
+        "post": "download this app!",
+        "__v": 0,
+        "hidden": false,
+        "stars": []
+    }
+]
 ```
 
 ===========
 ####Getting dot by id
 
-_**GET**_ /v1/api/dots/_id
+_**GET**_ /v1/api/dots/dot_id
 
-_Returns single dot object with id of _id_
-
-===========
-####Creating a dot
-
-_**POST**_ /v1/api/dots
-
-*Requires Auth* 
-
-Headers: `jwt: #token`
-
-Body:
+_Returns single dot object of given id and comments_
 ```
 {
-  "latitude": "30",
-  "longitude": "20",
-  "color": "green",
-  "title": "its me",
-  "body": "you had me at hello",
-  "username_id": "smokeyjoe"
+    "_id": "324comment1id2348790",
+    "user_id": "101testmanid010",
+    "username": "testman",
+    "time": 1416445071063,
+    "title": "HEY SEATTLE",
+    "latitude": 47.623,
+    "longitude": -122.333,
+    "post": "download this app!",
+    "__v": 0,
+    "hidden": false,
+    "stars": [],
+    "comments": [
+        {
+            "_id": "234879commentid293847",
+            "user_id": "101testmanid010",
+            "dot_id": "324comment1id2348790",
+            "text": "listen to testman. he knows.",
+            "__v": 0
+        }
+    ]
 }
 ```
-_Returns _id and time_
 
 ===========
-####Commenting on a dot
-
-_**PUT**_ /v1/api/dots/_id
-
-*Requires Auth* 
-
-Headers: `jwt: #token`
-
-Body: `{"text": "I like to comment"}`
-
-===========
-####Delete a dot
-
-_**DELETE**_ /v1/api/dots/_id
-
-*Requires Auth* 
-
-Headers: `jwt: #token`
-
-_Removes dot of id _id_
-
-===========
-Users
+Users Routes
 ===========
 ####Create User
 
@@ -142,20 +111,107 @@ _**POST**_ /api/users
 Body:
 ```
 {
-  "username": "mightyjoe",
-  "password": "joemighty",
-  "birthday": "123456790",
-  "email": "mightjoey@example.com"
+  "username": "testman",
+  "password": "testpassword",
+  "birthday": 1,
+  "email": "test@example.com"
 }
 ```
 
 _Returns jwt token_
+```
+{
+    "jwt": "alkvnpefTHISdfaibISbvrawfAaweifjFAKEalskdfwaoHASHoiouaslfjakwjef"
+}
+```
 
 ===========
 ####Login
 
 _**GET**_ /api/users
 
-`username: "mightyjoe", password: "joemighty"`
+`username: "testman", password: "testpassword"`
 
 _Returns jwt token_
+
+===========
+Authenticated Routes
+===========
+*Requires Auth* Headers: `jwt: alkvnpefTHISdfaibISbvrawfAaweifjFAKEalskdfwaoHASHoiouaslfjakwjef`
+
+===========
+####Creating a dot
+
+_**POST**_ /v1/api/dots
+
+Body (*JSON*):
+```
+{
+  "longitude": "-122.333",
+  "latitude": "47.623",
+  "title": "HEY SEATTLE",
+  "post": "download this app!",
+  "color": "blue"
+}
+```
+_Returns _id and time_
+```
+{
+    "dot_id": "275FAKEID1738",
+    "time": 1416445071063
+}
+```
+
+===========
+####Commenting on a dot
+
+_**POST**_ /v1/api/comments/dot_id
+
+Body(*JSON*):
+`{"text": "listen to testman. he knows things."}`
+
+_Returns comment message on success_
+`"listen to testman. he knows things."`
+
+===========
+####Getting users dots
+
+_**GET**_ /v1/api/dots/mydots
+
+_Returns array of dots for that user_
+```
+[
+    {
+        "_id": "324comment1id2348790",
+        "user_id": "101testmanid010",
+        "username": "testman",
+        "time": 1416445071063,
+        "title": "HEY SEATTLE",
+        "latitude": 47.623,
+        "longitude": -122.333,
+        "post": "download this app!",
+        "__v": 0,
+        "hidden": false,
+        "stars": []
+    },
+    {
+        "_id": "203comment2id092384",
+        "user_id": "101testmanid010",
+        "username": "testman",
+        "time": 1416445071064,
+        "title": "YO",
+        "latitude": 47.312,
+        "longitude": -122.373,
+        "post": "this is awesome!",
+        "__v": 0,
+        "hidden": false,
+        "stars": []
+    }
+]
+```
+===========
+####Delete a dot - *NOT TESTED*
+
+_**DELETE**_ /v1/api/dots/_id
+
+_Removes dot of id _id_
