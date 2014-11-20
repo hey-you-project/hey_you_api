@@ -12,39 +12,81 @@ var appUrl = 'http://localhost:3000';
 describe('basic dot CRUD', function() {
   var dotId;
   var zoneData = '{' +
-      '"latMin": 47.60,' +
-      '"latMax": 47.62,' +
+      '"latMin": 47.59,' +
+      '"latMax": 47.61,' +
       '"longMin": -122.34,' +
       '"longMax": -122.32' +
       '}';
 
-  var randomNum = Math.floor(Math.random() * 99999);
-  var randUser = 'fred' + randomNum;
-  var jwtToken;
+  var User = {username: 'dotUser', password: 'foobarfoo', birthday: 1, email: 'test@example.com'};
+  var User2 = {username: 'dotUser2', password: 'foobarfoo', birthday: 100, email: 'test2@example.com'};
+  var jwtToken, jwtToken2;
 
   before(function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({username: randUser, password: 'foobarfoo', birthday: 1, email: 'test@example.com'})
+    .send(User)
     .end(function(err, res) {
       expect(err).to.eql(null);
+      expect(res).to.have.status(200);
       expect(res.body).to.have.property('jwt');
       jwtToken = res.body.jwt;
       done();
     });
   });
 
-  it('should create a dot (POST api/dots)', function(done) {
+  before(function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/users')
+    .send(User2)
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property('jwt');
+      jwtToken2 = res.body.jwt;
+      done();
+    });
+  });
+
+  it('should create a dot in San Fransico (POST api/dots)', function(done) {
     chai.request(appUrl)
     .post(apiBase + '/api/dots')
     .set({jwt: jwtToken})
-    .send({latitude: "47.61", longitude: "-122.33", color: "blue", title: "Hey you, with the fancy shoes", post: "Nice shoes!!", username_id: "22489701"})
+    .send({latitude: "37.7833", longitude: "-122.4167", color: "blue", title: "Hey you, with the startup", post: "I am in San Fransico"})
     .end(function(err, res) {
       expect(err).to.eql(null);
+      expect(res).to.have.status(200);
       expect(res.text).to.not.eql('there was an error');
       expect(res.body).to.have.property('dot_id');
-      //expect username_id to exist in User._Id
+      done();
+    });
+  });
+
+  it('should create a dot in Seattle (POST api/dots)', function(done) {
+    chai.request(appUrl)
+    .post(apiBase + '/api/dots')
+    .set({jwt: jwtToken})
+    .send({latitude: "47.6097", longitude: "-122.3331", color: "green", title: "Hey you, with the coffee", post: "I am in Seattle"})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.text).to.not.eql('there was an error');
+      expect(res.body).to.have.property('dot_id');
       dotId = res.body.dot_id;
+      done();
+    });
+  });
+
+  it('should create a dot in NYC (POST api/dots)', function(done) {
+    chai.request(appUrl)
+    .post(apiBase + '/api/dots')
+    .set({jwt: jwtToken})
+    .send({latitude: "40.7127", longitude: "74.0059", color: "red", title: "Hey you, with the skyscrappers", post: "I am in NYC"})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.text).to.not.eql('there was an error');
+      expect(res.body).to.have.property('dot_id');
       done();
     });
   });
@@ -55,6 +97,7 @@ describe('basic dot CRUD', function() {
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
+      expect(res).to.have.status(200);
       expect(res.body).to.be.an('Array');
       done();
     });
@@ -65,13 +108,14 @@ describe('basic dot CRUD', function() {
     .get(apiBase + '/api/dots/' + dotId)
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.post).to.eql('Nice shoes!!');
+      expect(res).to.have.status(200);
+      expect(res.body.post).to.eql('I am in Seattle');
       expect(res.body).to.have.property('_id');
       done();
     });
   });
 
-    it('should handle getting a dot that DNE', function(done) {
+  it('should handle getting a dot that DNE', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + 1234567890)
     .end(function(err, res) {
@@ -87,7 +131,8 @@ describe('basic dot CRUD', function() {
     .set('zone', zoneData)
     .end(function(err, res) {
       expect(err).to.eql(null);
-      //expect(res.body).to.be.an(Array);
+      expect(res).to.have.status(200);
+      expect(res.body[0].post).to.eql('I am in Seattle');
       done();
     });
   });
@@ -96,10 +141,24 @@ describe('basic dot CRUD', function() {
     chai.request(appUrl)
     .post(apiBase + '/api/comments/' + dotId)
     .set({jwt: jwtToken})
-    .send({text: "this is a text comment"})
+    .send({text: "this is a text comment from the OP"})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body).to.eql('this is a text comment');
+      expect(res).to.have.status(200);
+      expect(res.body).to.eql('this is a text comment from the OP');
+      done();
+    });
+  });
+
+  it('should allow other users to post comments on a dot', function(done) {
+    chai.request(appUrl)
+    .post(apiBase + '/api/comments/' + dotId)
+    .set({jwt: jwtToken2})
+    .send({text: "this is a text comment from another user"})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.body).to.eql('this is a text comment from another user');
       done();
     });
   });
@@ -109,9 +168,10 @@ describe('basic dot CRUD', function() {
     .get(apiBase + '/api/dots/' + dotId)
     .end(function(err, res) {
       expect(err).to.eql(null);
+      expect(res).to.have.status(200);
       expect(res.body).to.have.property('_id');
-      expect(res.body.comments[0].text).to.eql('this is a text comment');
-      expect(res.body.comments[0].username).to.eql(randUser);
+      expect(res.body.comments[0].text).to.eql('this is a text comment from the OP');
+      expect(res.body.comments[0].username).to.eql(User.username);
       done();
     });
   });
@@ -122,11 +182,12 @@ describe('basic dot CRUD', function() {
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
+      expect(res).to.have.status(200);
       expect(res.body.id).to.eql(dotId);
       done();
     });
   });
-  
+
   it('should not be able to get a deleted dot', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + dotId)

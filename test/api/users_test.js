@@ -9,8 +9,7 @@ var expect = chai.expect;
 
 describe('basic user creation and authentcation', function() {
 
-  var randomNum = Math.floor(Math.random() * 99999);
-  var randUser = 'fred' + randomNum;
+  var randUser = 'UserTest';
   var jwtToken;
 
   it('should deny long usernames', function(done) {
@@ -105,7 +104,7 @@ describe('basic user creation and authentcation', function() {
   it('should allow birthday of 0 in UNIX time(January 1, 1970)', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({username: randUser + '1', password: 'foobarfoo', birthday: 0, email:'test@example.com'})
+    .send({username: 'BirthdayTest', password: 'foobarfoo', birthday: 0, email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
