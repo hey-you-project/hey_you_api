@@ -3,6 +3,7 @@
 
 var Dot = require('../models/dot');
 var Comment = require('../models/comment');
+var Star = require('../models/star');
 
 module.exports = function(app, jwtAuth) {
   // get all dots
@@ -29,11 +30,26 @@ module.exports = function(app, jwtAuth) {
 
   // get single dot by id
   app.get('/api/dots/:id', function(req, res) {
-    Dot.findOne({_id: req.params.id, hidden: false}, function(err, data) {
+    Dot.findOneAndUpdate({_id: req.params.id, hidden: false}, {$inc: {views: 1}}, function(err, data) {
       if (err || !data) {
         return res.status(500).send('cannot get dot');
       }
       var dot = data.toObject();
+      Star.find({dot_id: req.params.id}, function(err, stars) {
+        if (err) {
+          console.log(err);
+          return res.status(500).send('cannot get stars');
+        }
+        dot.stars = stars.length;
+        dot.starred = false;
+        if (req.headers.username) {
+          stars.forEach(function(star) {
+            if (star.username === req.headers.username) {
+              dot.starred = true;
+            }
+          });
+        }
+      });
       Comment.find({dot_id: req.params.id})
       .sort('timestamp')
       .exec(function(err, comments) {
@@ -98,13 +114,21 @@ module.exports = function(app, jwtAuth) {
   // DELETE a dot
   //THIS NEEDS TO CHANGE FROM A REMOVE TO AN ARCHIVE
   app.delete('/api/dots/:id', jwtAuth, function(req, res) {
-    Dot.findOneAndUpdate({_id: req.params.id, hidden:false, user_id: req.user._id}, {hidden: true}, function(err, data) {
+    Dot.remove({_id:req.params.id, user_id: req.user._id}, function(err, num) {
+      if (err) return res.status(500).send('cannot delete');
+      if (num !== 0) {
+        res.json({msg: 'success!'});
+      } else {
+        res.json({msg: 'cannot delete'});
+      }
+    });
+    /*Dot.findOneAndUpdate({_id: req.params.id, hidden:false, user_id: req.user._id}, {hidden: true}, function(err, data) {
       if (err) {
         console.log(err);
         return res.status(500).send('there was an error');
       }
       // tbc
       res.send({id: data._id, time: Date.now()});
-    });
+    });*/ //archive options
   });
 };

@@ -11,6 +11,9 @@ var appUrl = 'http://localhost:3000';
 
 describe('basic dot CRUD', function() {
   var dotId;
+  var views;
+  var commentId;
+  var commentId2;
   var zoneData = '{' +
       '"latMin": 47.59,' +
       '"latMax": 47.61,' +
@@ -99,6 +102,7 @@ describe('basic dot CRUD', function() {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
       expect(res.body).to.be.an('Array');
+      expect(res.body[0].color).to.eql('blue');
       done();
     });
   });
@@ -111,6 +115,17 @@ describe('basic dot CRUD', function() {
       expect(res).to.have.status(200);
       expect(res.body.post).to.eql('I am in Seattle');
       expect(res.body).to.have.property('_id');
+      views = res.body.views;
+      done();
+    });
+  });
+
+  it('should increment views on a GET', function(done) {
+    chai.request(appUrl)
+    .get(apiBase + '/api/dots/' + dotId)
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body.views).to.eql(views + 1);
       done();
     });
   });
@@ -163,7 +178,7 @@ describe('basic dot CRUD', function() {
     });
   });
 
-  it('should check to see if that comment was pushed (GET api/dots/:id)', function(done) {
+  it('should show comments on a get of dot (GET api/dots/:id)', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + dotId)
     .end(function(err, res) {
@@ -172,6 +187,82 @@ describe('basic dot CRUD', function() {
       expect(res.body).to.have.property('_id');
       expect(res.body.comments[0].text).to.eql('this is a text comment from the OP');
       expect(res.body.comments[0].username).to.eql(User.username);
+      commentId = res.body.comments[0]._id;
+      commentId2 = res.body.comments[1]._id;
+      done();
+    });
+  });
+  
+  it('should allow users to star a dot', function(done) {
+    chai.request(appUrl)
+    .post(apiBase + '/api/stars/' + dotId)
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.body.msg).to.eql('starred!');
+      done();
+    });
+  });
+  
+  it('should increment stars and show starred after starring', function(done) {
+    chai.request(appUrl)
+    .get(apiBase + '/api/dots/' + dotId)
+    .set({username: User.username})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property('stars');
+      expect(res.body).to.have.property('starred');
+      expect(res.body.stars).to.eql(1);
+      expect(res.body.starred).to.be.true;
+      done();
+    });
+  });
+
+  it('should allow users to unstar a dot', function(done) {
+    chai.request(appUrl)
+    .post(apiBase + '/api/stars/' + dotId)
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.body.msg).to.eql('unstarred!');
+      done();
+    });
+  });
+
+  it('should allow an original commenter to delete their comment', function(done) {
+    chai.request(appUrl)
+    .delete(apiBase + '/api/comments/' + commentId)
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body.msg).to.eql('removed!');
+      done();
+    });
+  });
+  
+  it('should not contain deleted comments', function(done) {
+    chai.request(appUrl)
+    .get(apiBase + '/api/dots/' + dotId)
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property('_id');
+      expect(res.body.comments[0].text).to.eql('this is a text comment from another user');
+      expect(res.body.comments[0].username).to.eql(User2.username);
+      done();
+    });
+  });
+
+  it('should not allow user to delete another users comment', function(done) {
+    chai.request(appUrl)
+    .delete(apiBase + '/api/comments/' + commentId2)
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body.msg).to.eql('cannot delete');
       done();
     });
   });
@@ -182,8 +273,8 @@ describe('basic dot CRUD', function() {
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
+      expect(res.body.msg).to.eql('success!');
       expect(res).to.have.status(200);
-      expect(res.body.id).to.eql(dotId);
       done();
     });
   });
