@@ -25,6 +25,7 @@ var dotRouter = express.Router();
 require('./routes/user_routes')(app, passport);
 require('./routes/dot_routes')(dotRouter, jwtauth);
 require('./routes/comment_routes')(commentRouter, jwtauth);
+require('./routes/tos_routes')(app, jwtauth);
 app.use('/v1', dotRouter);
 app.use('/v1', commentRouter);
 

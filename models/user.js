@@ -12,7 +12,12 @@ var userSchema = mongoose.Schema({
   },
   email: String,
   birthday: Number,
-  creationDate: Number
+  creationDate: Number,
+  agreed_tos: {
+    tos_id: mongoose.Schema.Types.ObjectId,
+    version: String,
+    agree_date: Number
+  }
 });
 
 userSchema.methods.generateHash = function(password) {
