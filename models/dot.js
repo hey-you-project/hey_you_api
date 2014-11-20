@@ -6,13 +6,15 @@ var mongoose = require('mongoose');
 var dotSchema = mongoose.Schema({
   latitude: Number,
   longitude: Number,
-  color: {type: String, required: true},
-  title: {type: String, required: true},
-  body: String,
-  username_id: String,
-  comments: [],
+  color: String,
+  title: String,
+  post: String,
+  username: String,
+  user_id: mongoose.Schema.Types.ObjectId,
   time: Number,
-  stars: Number
+  stars: [],
+  views: Number,
+  hidden: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('Dot', dotSchema);
