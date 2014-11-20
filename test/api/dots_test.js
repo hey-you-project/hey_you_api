@@ -192,6 +192,45 @@ describe('basic dot CRUD', function() {
       done();
     });
   });
+  
+  it('should allow users to star a dot', function(done) {
+    chai.request(appUrl)
+    .post(apiBase + '/api/stars/' + dotId)
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.body.msg).to.eql('starred!');
+      done();
+    });
+  });
+  
+  it('should increment stars and show starred after starring', function(done) {
+    chai.request(appUrl)
+    .get(apiBase + '/api/dots/' + dotId)
+    .set({username: User.username})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property('stars');
+      expect(res.body).to.have.property('starred');
+      expect(res.body.stars).to.eql(1);
+      expect(res.body.starred).to.be.true;
+      done();
+    });
+  });
+
+  it('should allow users to unstar a dot', function(done) {
+    chai.request(appUrl)
+    .post(apiBase + '/api/stars/' + dotId)
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res).to.have.status(200);
+      expect(res.body.msg).to.eql('unstarred!');
+      done();
+    });
+  });
 
   it('should allow an original commenter to delete their comment', function(done) {
     chai.request(appUrl)
