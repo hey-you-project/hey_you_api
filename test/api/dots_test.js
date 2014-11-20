@@ -17,9 +17,8 @@ describe('basic dot CRUD', function() {
       '"longMin": -122.34,' +
       '"longMax": -122.32' +
       '}';
-
-  var randomNum = Math.floor(Math.random() * 99999);
-  var randUser = 'fred' + randomNum;
+  
+  var randUser = 'dotUser';
   var jwtToken;
 
   before(function(done) {
@@ -86,6 +85,7 @@ describe('basic dot CRUD', function() {
     .get(apiBase + '/api/dots')
     .set('zone', zoneData)
     .end(function(err, res) {
+      console.log(res.body);
       expect(err).to.eql(null);
       //expect(res.body).to.be.an(Array);
       done();

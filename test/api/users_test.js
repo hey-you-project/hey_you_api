@@ -9,8 +9,8 @@ var expect = chai.expect;
 
 describe('basic user creation and authentcation', function() {
 
-  var randomNum = Math.floor(Math.random() * 99999);
-  var randUser = 'fred' + randomNum;
+  //var randomNum = Math.floor(Math.random() * 99999);
+  var randUser = 'UserTest';
   var jwtToken;
 
   it('should deny long usernames', function(done) {

@@ -78,6 +78,7 @@ module.exports = function(app, jwtAuth) {
       dot.longitude = req.body.longitude;
       dot.latitude = req.body.latitude;
       dot.title = req.body.title;
+      dot.color = req.body.color;
       dot.time = Date.now();
       dot.username = req.user.basic.username;
       dot.user_id = req.user._id;
