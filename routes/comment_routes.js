@@ -10,7 +10,7 @@ module.exports = function(app, jwtAuth) {
       comment.text = req.body.text;
       comment.dot_id = req.params.id;
       comment.user_id = req.user._id;
-      comment.username = req.user.username;
+      comment.username = req.user.basic.username;
       comment.timeStamp = Date.now();
     } catch (err) {
       console.log('ERRORRRORRRR');

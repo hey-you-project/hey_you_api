@@ -30,9 +30,8 @@ module.exports = function(app, jwtAuth) {
   // get single dot by id
   app.get('/api/dots/:id', function(req, res) {
     Dot.findOne({_id: req.params.id, hidden: false}, function(err, data) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send('there was an error');
+      if (err || !data) {
+        return res.status(500).send('cannot get dot');
       }
       var dot = data.toObject();
       Comment.find({dot_id: req.params.id})
@@ -97,13 +96,10 @@ module.exports = function(app, jwtAuth) {
   // DELETE a dot
   //THIS NEEDS TO CHANGE FROM A REMOVE TO AN ARCHIVE
   app.delete('/api/dots/:id', jwtAuth, function(req, res) {
-    Dot.findOneAndUpdate({_id: req.params.id, hidden:false}, {hidden: true}, function(err, data) {
+    Dot.findOneAndUpdate({_id: req.params.id, hidden:false, user_id: req.user._id}, {hidden: true}, function(err, data) {
       if (err) {
         console.log(err);
         return res.status(500).send('there was an error');
-      }
-      if (data.username_id !== req.user.basic.username) {
-        res.status(401).send('cannot delete this dot');
       }
       // tbc
       res.send({id: data._id, time: Date.now()});
