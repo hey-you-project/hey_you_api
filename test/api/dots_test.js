@@ -11,6 +11,9 @@ var appUrl = 'http://localhost:3000';
 
 describe('basic dot CRUD', function() {
   var dotId;
+  var views;
+  var altJwtToken;
+  var commentId;
   var zoneData = '{' +
       '"latMin": 47.60,' +
       '"latMax": 47.62,' +
@@ -67,11 +70,22 @@ describe('basic dot CRUD', function() {
       expect(err).to.eql(null);
       expect(res.body.post).to.eql('Nice shoes!!');
       expect(res.body).to.have.property('_id');
+      views = res.body.views;
       done();
     });
   });
 
-    it('should handle getting a dot that DNE', function(done) {
+  it('should increment views on a GET', function(done) {
+    chai.request(appUrl)
+    .get(apiBase + '/api/dots/' + dotId)
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body.views).to.eql(views + 1);
+      done();
+    });
+  });
+
+  it('should handle getting a dot that DNE', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + 1234567890)
     .end(function(err, res) {
@@ -112,6 +126,18 @@ describe('basic dot CRUD', function() {
       expect(res.body).to.have.property('_id');
       expect(res.body.comments[0].text).to.eql('this is a text comment');
       expect(res.body.comments[0].username).to.eql(randUser);
+      commentId = res.body.comments[0]._id;
+      done();
+    });
+  });
+
+  it('should allow an original commenter to delete their comment', function(done) {
+    chai.request(appUrl)
+    .delete(apiBase + '/api/comments/' + commentId)
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body.msg).to.eql('success!');
       done();
     });
   });
@@ -122,11 +148,11 @@ describe('basic dot CRUD', function() {
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.id).to.eql(dotId);
+      expect(res.body.msg).to.eql('success!');
       done();
     });
   });
-  
+
   it('should not be able to get a deleted dot', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + dotId)

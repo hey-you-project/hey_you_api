@@ -12,7 +12,8 @@ var dotSchema = mongoose.Schema({
   username: String,
   user_id: mongoose.Schema.Types.ObjectId,
   time: Number,
-  stars: [],
+  stars: Number,
+  starred: Boolean,
   views: Number,
   hidden: {type: Boolean, default: false}
 });

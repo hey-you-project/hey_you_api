@@ -24,4 +24,11 @@ module.exports = function(app, jwtAuth) {
       res.json(data.text);
     });
   });
+
+  app.delete('/api/comments/:id', jwtAuth, function(req, res) {
+    Comment.remove({_id:req.params.id, user_id: req.user._id}, function(err) {
+      if (err) return res.status(500).send('cannot delete');
+      res.json({msg: 'success!'});
+    });
+  });
 };
