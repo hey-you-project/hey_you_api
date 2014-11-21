@@ -24,6 +24,20 @@ var dotRouter = express.Router();
 var starRouter = express.Router();
 //dotRouter.use(jwtauth);
 
+app.all('*', function(req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  // Pass to next layer of middleware
+  next();
+});
+
 require('./routes/user_routes')(app, passport);
 require('./routes/dot_routes')(dotRouter, jwtauth, jwtauthOptional);
 require('./routes/comment_routes')(commentRouter, jwtauth);
@@ -32,11 +46,6 @@ require('./routes/star_routes')(starRouter, jwtauth);
 app.use('/v1', dotRouter);
 app.use('/v1', commentRouter);
 app.use('/v1', starRouter);
-
-app.all('*', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
 
 app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), function() {
