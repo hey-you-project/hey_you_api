@@ -13,27 +13,27 @@ module.exports = function(app, passport) {
   app.post('/api/users', function(req, res) {
     User.findOne({'basic.username': new RegExp('^' + req.body.username + '$', 'i')}, function(err, user) {
       if (err) return res.status(500).send('server error');
-      if (user) return res.status(500).send('cannot create that user');
+      if (user) return res.status(400).send('1003');
 
       // user model validation
-      if (!req.body.username) return res.status(500).send('please provide username');
-      if (!req.body.password) return res.status(500).send('please provide password');
-      if (isNaN(req.body.birthday)) return res.status(500).send('please provide birthday');
-      if (!req.body.email) return res.status(500).send('please provide email');
+      if (!req.body.username) return res.status(400).send('please provide username');
+      if (!req.body.password) return res.status(400).send('please provide password');
+      if (isNaN(req.body.birthday)) return res.status(400).send('please provide birthday');
+      if (!req.body.email) return res.status(400).send('please provide email');
 
       // username validation
       if (req.body.username.length > 12 || req.body.username.length < 3) {
-        return res.status('500').send('invalid username');
+        return res.status(400).send('1004');
       }
 
       // password validation
       if (req.body.password.length < 6) {
-        return res.status(500).send('invalid password');
+        return res.status(400).send('1005');
       }
 
       // age validation, 31556926000 = 18 years
       if (req.body.birthday > Date.now() - 31556926000) {
-        return res.status(401).send('unauthorized');
+        return res.status(400).send('1006');
       }
 
       var newUser = new User();

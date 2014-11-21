@@ -12,8 +12,8 @@ var apiBase = '/v1';
 var appUrl = 'http://localhost:3000';
 
 describe('basic ToS agreement mechanism', function() {
-  var randomNum = Math.floor(Math.random() * 99999);
-  var randUser = 'fred' + randomNum;
+  
+  var randUser = 'ToSuser';
   var jwtToken;
 
   before(function(done) {
