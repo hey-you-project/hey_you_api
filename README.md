@@ -83,6 +83,8 @@ _Returns array of dots in zone_
 
 _**GET**_ /v1/api/dots/dot_id
 
+*note:* jwt header is optional. If set, the API will check if the user has stared the dot.
+
 _Returns single dot object of given id and comments_
 ```
 { _id: '546eaae6a45f8b021729bddb',
