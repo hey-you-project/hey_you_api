@@ -11,6 +11,10 @@ app.use(bp.json());
 mongoose.connect(process.env.MONGO_URL ||
                  process.env.MONGOLAB_URI ||
                  'mongodb://localhost/hey_you_db');
+
+var dotAgeOfExpire = 172800;  //in seconds (48hrs is 172800sec, 15min is 900s)
+setInterval(function() { require('./lib/archive_old_dots')(dotAgeOfExpire); }, (1000 * 900));
+
 app.set('jwtSecret', process.env.JWT_SECRET || 'changethisordie');
 
 app.use(passport.initialize());
