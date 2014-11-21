@@ -42,6 +42,7 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
         }
         dot.stars = stars.length;
         dot.starred = false;
+        // checks to see if the user is passing a JWT token or not.
         if (req.loggedIn) {
           stars.forEach(function(star) {
             if (star.username === req.user.basic.username) {
@@ -49,13 +50,6 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
             }
           });
         }
-//        if (req.headers.username) {
-//          stars.forEach(function(star) {
-//            if (star.username === req.headers.username) {
-//              dot.starred = true;
-//            }
-//          });
-//        }
       });
       Comment.find({dot_id: req.params.id})
       .sort('timestamp')
