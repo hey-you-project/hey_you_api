@@ -5,7 +5,7 @@ var Dot = require('../models/dot');
 var Comment = require('../models/comment');
 var Star = require('../models/star');
 
-module.exports = function(app, jwtAuth) {
+module.exports = function(app, jwtAuth, jwtAuthOptional) {
   // get all dots
   app.get('/api/dots/all', function(req, res) {
     Dot.find({hidden: false}, function(err, data) {
@@ -29,7 +29,7 @@ module.exports = function(app, jwtAuth) {
   });
 
   // get single dot by id
-  app.get('/api/dots/:id', function(req, res) {
+  app.get('/api/dots/:id', jwtAuthOptional, function(req, res) {
     Dot.findOneAndUpdate({_id: req.params.id, hidden: false}, {$inc: {views: 1}}, function(err, data) {
       if (err || !data) {
         return res.status(500).send('cannot get dot');
@@ -42,9 +42,10 @@ module.exports = function(app, jwtAuth) {
         }
         dot.stars = stars.length;
         dot.starred = false;
-        if (req.headers.username) {
+        // checks to see if the user is passing a JWT token or not.
+        if (req.loggedIn) {
           stars.forEach(function(star) {
-            if (star.username === req.headers.username) {
+            if (star.username === req.user.basic.username) {
               dot.starred = true;
             }
           });
@@ -66,7 +67,7 @@ module.exports = function(app, jwtAuth) {
   // GET all dots within lat/long range
   app.get('/api/dots', function(req, res) {
     if (!req.headers.zone) {
-      res.status(500).send('expected zone in headers');
+      res.status(400).send('expected zone in headers');
     }
     var zone = JSON.parse(req.headers.zone);
     /*
@@ -100,7 +101,7 @@ module.exports = function(app, jwtAuth) {
       dot.username = req.user.basic.username;
       dot.user_id = req.user._id;
     } catch (err) {
-      return res.status(500).send('invalid input');
+      return res.status(400).send('invalid input');
     }
     dot.save(function(err, data) {
       if (err) {

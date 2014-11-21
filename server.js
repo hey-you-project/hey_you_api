@@ -17,6 +17,7 @@ app.use(passport.initialize());
 
 require('./lib/passport')(passport);
 var jwtauth = require('./lib/jwt_auth')(app.get('jwtSecret'));
+var jwtauthOptional = require('./lib/jwt_auth_optional')(app.get('jwtSecret'));
 
 var commentRouter = express.Router();
 var dotRouter = express.Router();
@@ -24,7 +25,7 @@ var starRouter = express.Router();
 //dotRouter.use(jwtauth);
 
 require('./routes/user_routes')(app, passport);
-require('./routes/dot_routes')(dotRouter, jwtauth);
+require('./routes/dot_routes')(dotRouter, jwtauth, jwtauthOptional);
 require('./routes/comment_routes')(commentRouter, jwtauth);
 require('./routes/tos_routes')(app, jwtauth);
 require('./routes/star_routes')(starRouter, jwtauth);
