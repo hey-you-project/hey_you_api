@@ -18,7 +18,7 @@ describe('basic user creation and authentcation', function() {
     .send({username: 'thisnameisjustmuchtoolong', password: 'foobarfoo', birthday: 0, email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res).to.have.status(500);
+      expect(res).to.have.status(400);
       done();
     });
   });
@@ -29,7 +29,7 @@ describe('basic user creation and authentcation', function() {
     .send({username: randUser, password: 'foob', birthday: 0, email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res).to.have.status(500);
+      expect(res).to.have.status(400);
       done();
     });
   });
@@ -40,7 +40,7 @@ describe('basic user creation and authentcation', function() {
     .send({username: randUser, password: 'foob', birthday: Date.now(), email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res).to.have.status(500);
+      expect(res).to.have.status(400);
       done();
     });
   });
@@ -51,7 +51,7 @@ describe('basic user creation and authentcation', function() {
     .send({password: 'foob', birthday: Date.now(), email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res).to.have.status(500);
+      expect(res).to.have.status(400);
       done();
     });
   });
@@ -62,7 +62,7 @@ describe('basic user creation and authentcation', function() {
     .send({username: randUser, birthday: Date.now(), email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res).to.have.status(500);
+      expect(res).to.have.status(400);
       done();
     });
   });
@@ -73,7 +73,7 @@ describe('basic user creation and authentcation', function() {
     .send({username: randUser, password: 'foob', email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res).to.have.status(500);
+      expect(res).to.have.status(400);
       done();
     });
   });
@@ -84,7 +84,7 @@ describe('basic user creation and authentcation', function() {
     .send({username: randUser, password: 'foob', birthday: Date.now()})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res).to.have.status(500);
+      expect(res).to.have.status(400);
       done();
     });
   });
@@ -118,8 +118,8 @@ describe('basic user creation and authentcation', function() {
     .send({username: randUser, password: 'foobarfoo', birthday: 0, email:'test@example.com'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.status).to.eql(500);
-      expect(res.text).to.eql('cannot create that user');
+      expect(res.status).to.eql(400);
+      expect(res.text).to.eql('1003');
       done();
     });
   });
