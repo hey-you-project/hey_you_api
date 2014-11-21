@@ -33,6 +33,11 @@ app.use('/v1', dotRouter);
 app.use('/v1', commentRouter);
 app.use('/v1', starRouter);
 
+app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), function() {
   console.log('server listening on ' + app.get('port'));
