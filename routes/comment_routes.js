@@ -13,7 +13,7 @@ module.exports = function(app, jwtAuth) {
       comment.username = req.user.basic.username;
       comment.timestamp = Date.now();
     } catch (err) {
-      return res.status(500).send('cannot comment');
+      return res.status(400).send('cannot comment');
     }
     comment.save(function(err, data) {
       if (err) {

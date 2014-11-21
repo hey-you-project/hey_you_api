@@ -67,7 +67,7 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
   // GET all dots within lat/long range
   app.get('/api/dots', function(req, res) {
     if (!req.headers.zone) {
-      res.status(500).send('expected zone in headers');
+      res.status(400).send('expected zone in headers');
     }
     var zone = JSON.parse(req.headers.zone);
     /*
@@ -101,7 +101,7 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
       dot.username = req.user.basic.username;
       dot.user_id = req.user._id;
     } catch (err) {
-      return res.status(500).send('invalid input');
+      return res.status(400).send('invalid input');
     }
     dot.save(function(err, data) {
       if (err) {
