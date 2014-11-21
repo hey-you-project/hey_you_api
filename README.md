@@ -121,6 +121,8 @@ _Returns single dot object of given id and comments_
 
 _**GET**_ /v1/api/dots/mydots
 
+*jwt required in header*
+
 _Returns array dot objects made from the user_
 ```
 [ { _id: '546eb21a9bd55e171793a195',
@@ -136,15 +138,13 @@ _Returns array dot objects made from the user_
     starred: false }, {...} ]
 ```
 
-Authenticated Routes :
 ===========
-Header: 
-
-`jwt: alkvnpefTHISdfaibISbvrawfAaweifjFAKEalskdfwaoHASHoiouaslfjakwjef`
 
 ####Creating a dot :
 
 _**POST**_ /v1/api/dots
+
+*jwt required in header*
 
 Body (*JSON*):
 ```
@@ -164,6 +164,8 @@ _Returns _id and time_
 
 _**DELETE**_ /v1/api/dots/_id
 
+*jwt required in header*
+
 _Removes dot of id _id_
 
 ===========
@@ -181,6 +183,8 @@ _Returns comment message on success_
 
 _**DELETE**_ /v1/api/comments/dot_id
 
+*jwt required in header*
+
 _Returns 'removed!' message on success_
 `removed!`
 
@@ -188,6 +192,8 @@ _Returns 'removed!' message on success_
 ####Getting users dots :
 
 _**GET**_ /v1/api/dots/mydots
+
+*jwt required in header*
 
 _Returns array of dots for that user_
 ```
@@ -221,5 +227,7 @@ _Returns array of dots for that user_
 ####Toggle a user's star
 
 _**POST**_ /v1/api/stars/_id
+
+*jwt required in header*
 
 _Adds a star or deletes a star based on user history_
