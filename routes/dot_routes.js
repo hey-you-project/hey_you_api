@@ -5,7 +5,7 @@ var Dot = require('../models/dot');
 var Comment = require('../models/comment');
 var Star = require('../models/star');
 
-module.exports = function(app, jwtAuth) {
+module.exports = function(app, jwtAuth, jwtAuthOptional) {
   // get all dots
   app.get('/api/dots/all', function(req, res) {
     Dot.find({hidden: false}, function(err, data) {
@@ -29,7 +29,7 @@ module.exports = function(app, jwtAuth) {
   });
 
   // get single dot by id
-  app.get('/api/dots/:id', function(req, res) {
+  app.get('/api/dots/:id', jwtAuthOptional, function(req, res) {
     Dot.findOneAndUpdate({_id: req.params.id, hidden: false}, {$inc: {views: 1}}, function(err, data) {
       if (err || !data) {
         return res.status(500).send('cannot get dot');
@@ -42,13 +42,20 @@ module.exports = function(app, jwtAuth) {
         }
         dot.stars = stars.length;
         dot.starred = false;
-        if (req.headers.username) {
+        if (req.loggedIn) {
           stars.forEach(function(star) {
-            if (star.username === req.headers.username) {
+            if (star.username === req.user.basic.username) {
               dot.starred = true;
             }
           });
         }
+//        if (req.headers.username) {
+//          stars.forEach(function(star) {
+//            if (star.username === req.headers.username) {
+//              dot.starred = true;
+//            }
+//          });
+//        }
       });
       Comment.find({dot_id: req.params.id})
       .sort('timestamp')

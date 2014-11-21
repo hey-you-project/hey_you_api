@@ -208,7 +208,7 @@ describe('basic dot CRUD', function() {
   it('should increment stars and show starred after starring', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + dotId)
-    .set({username: User.username})
+    .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
