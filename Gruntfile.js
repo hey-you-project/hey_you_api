@@ -9,11 +9,11 @@ module.exports = function(grunt) {
       options: {
         node: true
       },
-      src: ['models/**/*.js', 'server.js', 'routes/**/*.js', 'lib/**/*.js']
+      src: ['models/**/*.js', 'server.js', 'routes/**/*.js', 'lib/**/*.js', 'test/**/*js']
     },
 
     jscs: {
-      src: ['models/**/*.js', 'server.js', 'routes/**/*.js', 'lib/**/*.js'],
+      src: ['models/**/*.js', 'server.js', 'routes/**/*.js', 'lib/**/*.js', 'test/**/*js'],
       options: {
         config: '.jscsrc'
       }
