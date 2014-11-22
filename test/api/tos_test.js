@@ -5,14 +5,14 @@ chai.use(chaihttp);
 
 require('../../server');
 var Tos = require('../../models/tos');
-var User = require('../../models/user')
+var User = require('../../models/user');
 
 var expect = chai.expect;
 var apiBase = '/v1';
 var appUrl = 'http://localhost:3000';
 
 describe('basic ToS agreement mechanism', function() {
-  
+
   var randUser = 'ToSuser';
   var jwtToken;
 
@@ -45,7 +45,7 @@ describe('basic ToS agreement mechanism', function() {
       done();
     });
   });
-  
+
   it('should save when user agrees to ToS', function(done) {
     chai.request(appUrl)
     .patch('/api/tos/agreed')
