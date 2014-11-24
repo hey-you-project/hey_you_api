@@ -1,4 +1,3 @@
-/*jshint node: true*/
 'use strict';
 
 var Dot = require('../models/dot');
@@ -6,7 +5,7 @@ var Comment = require('../models/comment');
 var Star = require('../models/star');
 
 module.exports = function(app, jwtAuth, jwtAuthOptional) {
-  // get all dots
+  // GET all dots
   app.get('/api/dots/all', function(req, res) {
     Dot.find({hidden: false}, function(err, data) {
       if (err) {
@@ -17,7 +16,7 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
     });
   });
 
-  // get dots for user
+  // GET dots for a user
   app.get('/api/dots/mydots', jwtAuth, function(req, res) {
     Dot.find({user_id: req.user._id, hidden: false}, function(err, data) {
       if (err) {
@@ -28,7 +27,7 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
     });
   });
 
-  // get single dot by id
+  // GET a single dot by id
   app.get('/api/dots/:id', jwtAuthOptional, function(req, res) {
     Dot.findOneAndUpdate({_id: req.params.id, hidden: false}, {$inc: {views: 1}}, function(err, data) {
       if (err || !data) {
@@ -42,7 +41,7 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
         }
         dot.stars = stars.length;
         dot.starred = false;
-        // checks to see if the user is passing a JWT token or not.
+
         if (req.loggedIn) {
           stars.forEach(function(star) {
             if (star.username === req.user.basic.username) {
@@ -70,10 +69,7 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
       res.status(400).send('expected zone in headers');
     }
     var zone = JSON.parse(req.headers.zone);
-    /*
-    example data from zone:
-    {"latMax":47.61070610565,"longMin":-122.3387206914,"longMax":-122.3254213086,"latMin":47.60171189435}
-    */
+
     Dot.find({latitude:{ $gt: zone.latMin, $lt: zone.latMax},
               longitude: {$gt: zone.longMin, $lt: zone.longMax},
               hidden: false},
@@ -82,13 +78,11 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
         console.log(err);
         return res.status(500).send('there was an error');
       }
-      // should no send raw schema data, but instead should be parsed
       res.json(data);
     });
   });
 
-  // POSTing a new dot
-  // tbd : catching bad json without crashing the server
+  // POST a new dot
   app.post('/api/dots', jwtAuth, function(req, res) {
     var dot = new Dot();
     try {
@@ -123,13 +117,5 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
         res.json({msg: 'cannot delete'});
       }
     });
-    /*Dot.findOneAndUpdate({_id: req.params.id, hidden:false, user_id: req.user._id}, {hidden: true}, function(err, data) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send('there was an error');
-      }
-      // tbc
-      res.send({id: data._id, time: Date.now()});
-    });*/ //archive options
   });
 };
