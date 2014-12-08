@@ -25,6 +25,7 @@ var jwtauthOptional = require('./lib/jwt_auth_optional')(app.get('jwtSecret'));
 var commentRouter = express.Router();
 var dotRouter = express.Router();
 var starRouter = express.Router();
+var messageRouter = express.Router();
 
 app.all('*', function(req, res, next) {
   // Website you wish to allow to connect
@@ -45,6 +46,8 @@ require('./routes/dot_routes')(dotRouter, jwtauth, jwtauthOptional);
 require('./routes/comment_routes')(commentRouter, jwtauth);
 require('./routes/tos_routes')(app, jwtauth);
 require('./routes/star_routes')(starRouter, jwtauth);
+require('./routes/message_routes')(messageRouter, jwtauth);
+app.use('/v1', messageRouter);
 app.use('/v1', dotRouter);
 app.use('/v1', commentRouter);
 app.use('/v1', starRouter);
