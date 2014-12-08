@@ -9,7 +9,8 @@
     "beforeEach" : false,
     "after"      : false,
     "afterEach"  : false,
-    "equal"      : false
+    "equal"      : false,
+    "grunt"      : false
   },
   "globalstrict": true,
   "quotmark": false,
@@ -18,5 +19,6 @@
   "undef": true,
   "unused": true,
   "indent": 2,
-  "node": true
+  "node": true,
+  "unused": false
 }

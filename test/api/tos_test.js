@@ -1,3 +1,5 @@
+'use strict';
+
 process.env.MONGO_URL = 'mongodb://localhost/hey_you_test';
 var chai = require('chai');
 var chaihttp = require('chai-http');
@@ -15,6 +17,8 @@ describe('basic ToS agreement mechanism', function() {
 
   var randUser = 'ToSuser';
   var jwtToken;
+  var tosId;
+  var tosVer;
 
   before(function(done) {
     chai.request(appUrl)

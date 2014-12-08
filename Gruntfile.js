@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-simple-mocha');
@@ -7,9 +9,9 @@ module.exports = function(grunt) {
   grunt.initConfig({
     jshint: {
       options: {
-        node: true
+        jshintrc: '.jshintrc'
       },
-      src: ['models/**/*.js', 'server.js', 'routes/**/*.js', 'lib/**/*.js', 'test/**/*js']
+      src: ['Gruntfile.js', 'models/**/*.js', 'server.js', 'routes/**/*.js', 'test/**/*.js', 'lib/jwt*js', 'lib/passport.js']
     },
 
     jscs: {
@@ -22,7 +24,8 @@ module.exports = function(grunt) {
     simplemocha: {
       src: ['test/api/users_test.js', 
             'test/api/dots_test.js',
-            'test/api/tos_test.js']
+            'test/api/tos_test.js',
+            'test/api/message_test.js']
     },
 
     mongo_drop: {
