@@ -31,8 +31,8 @@ module.exports = function(app, passport) {
         return res.status(400).send('1005');
       }
 
-      // age validation, 31556926000 = 18 years
-      if (req.body.birthday > Date.now() - 31556926000) {
+      // age validation, 31556926000 = 1 years
+      if (req.body.birthday > Date.now() - (31556926000 * 18)) {
         return res.status(400).send('1006');
       }
 
