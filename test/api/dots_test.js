@@ -23,7 +23,8 @@ describe('basic dot CRUD', function() {
 
   var User = {username: 'dotUser', password: 'foobarfoo', birthday: 1, email: 'test@example.com'};
   var User2 = {username: 'dotUser2', password: 'foobarfoo', birthday: 100, email: 'test2@example.com'};
-  var jwtToken, jwtToken2;
+  var jwtToken;
+  var jwtToken2;
 
   before(function(done) {
     chai.request('http://localhost:3000')
@@ -55,7 +56,7 @@ describe('basic dot CRUD', function() {
     chai.request(appUrl)
     .post(apiBase + '/api/dots')
     .set({jwt: jwtToken})
-    .send({latitude: "37.7833", longitude: "-122.4167", color: "blue", title: "Hey you, with the startup", post: "I am in San Fransico"})
+    .send({latitude: '37.7833', longitude: '-122.4167', color: 'blue', title: 'Hey you, with the startup', post: 'I am in San Fransico'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
@@ -69,7 +70,7 @@ describe('basic dot CRUD', function() {
     chai.request(appUrl)
     .post(apiBase + '/api/dots')
     .set({jwt: jwtToken})
-    .send({latitude: "47.6097", longitude: "-122.3331", color: "green", title: "Hey you, with the coffee", post: "I am in Seattle"})
+    .send({latitude: '47.6097', longitude: '-122.3331', color: 'green', title: 'Hey you, with the coffee', post: 'I am in Seattle'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
@@ -84,7 +85,7 @@ describe('basic dot CRUD', function() {
     chai.request(appUrl)
     .post(apiBase + '/api/dots')
     .set({jwt: jwtToken})
-    .send({latitude: "40.7127", longitude: "74.0059", color: "red", title: "Hey you, with the skyscrappers", post: "I am in NYC"})
+    .send({latitude: '40.7127', longitude: '74.0059', color: 'red', title: 'Hey you, with the skyscrappers', post: 'I am in NYC'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
@@ -156,7 +157,7 @@ describe('basic dot CRUD', function() {
     chai.request(appUrl)
     .post(apiBase + '/api/comments/' + dotId)
     .set({jwt: jwtToken})
-    .send({text: "this is a text comment from the OP"})
+    .send({text: 'this is a text comment from the OP'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
@@ -169,7 +170,7 @@ describe('basic dot CRUD', function() {
     chai.request(appUrl)
     .post(apiBase + '/api/comments/' + dotId)
     .set({jwt: jwtToken2})
-    .send({text: "this is a text comment from another user"})
+    .send({text: 'this is a text comment from another user'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
@@ -192,7 +193,7 @@ describe('basic dot CRUD', function() {
       done();
     });
   });
-  
+
   it('should allow users to star a dot', function(done) {
     chai.request(appUrl)
     .post(apiBase + '/api/stars/' + dotId)
@@ -204,7 +205,7 @@ describe('basic dot CRUD', function() {
       done();
     });
   });
-  
+
   it('should increment stars and show starred after starring', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + dotId)
@@ -215,7 +216,7 @@ describe('basic dot CRUD', function() {
       expect(res.body).to.have.property('stars');
       expect(res.body).to.have.property('starred');
       expect(res.body.stars).to.eql(1);
-      expect(res.body.starred).to.be.true;
+      expect(res.body.starred).to.be.true();
       done();
     });
   });
@@ -242,7 +243,7 @@ describe('basic dot CRUD', function() {
       done();
     });
   });
-  
+
   it('should not contain deleted comments', function(done) {
     chai.request(appUrl)
     .get(apiBase + '/api/dots/' + dotId)

@@ -1,4 +1,3 @@
-/*jshint node: true*/
 'use strict';
 
 var express = require('express');
@@ -26,7 +25,6 @@ var jwtauthOptional = require('./lib/jwt_auth_optional')(app.get('jwtSecret'));
 var commentRouter = express.Router();
 var dotRouter = express.Router();
 var starRouter = express.Router();
-//dotRouter.use(jwtauth);
 
 app.all('*', function(req, res, next) {
   // Website you wish to allow to connect
