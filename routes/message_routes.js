@@ -23,7 +23,7 @@ module.exports = function(app, jwtAuth) {
       var conversations = [];
       var user;
       for (var i = 0; i < data.length; i++) {
-        if (data[i].to_username === req.user.username) {
+        if (data[i].to_username === req.user.basic.username) {
           user = data[i].from_username;
         } else {
           user = data[i].to_username;

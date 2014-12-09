@@ -60,7 +60,7 @@ describe('message functions', function() {
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
-      expect(res.body[0]).to.eql('messageUser2');
+      expect(res.body[0]).to.eql('messageUser');
       done();
     });
   });
