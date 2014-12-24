@@ -11,7 +11,7 @@ module.exports = function(grunt) {
       options: {
         jshintrc: '.jshintrc'
       },
-      src: ['Gruntfile.js', 'models/**/*.js', 'server.js', 'routes/**/*.js', 'test/**/*.js', 'lib/jwt*js', 'lib/passport.js']
+      src: ['Gruntfile.js', 'models/**/*.js', 'server.js', 'routes/**/*.js', 'test/**/*.js', 'lib/**/cl_crawl.js', 'lib/passport.js']
     },
 
     jscs: {
