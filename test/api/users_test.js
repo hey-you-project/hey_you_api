@@ -39,8 +39,9 @@ describe('basic user creation and authentcation', function() {
   it('should deny young people', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({username: randUser, password: 'foobdfaasdf', birthday: 852019200000, email:'test@example.com'})
+    .send({username: randUser, password: 'foobdfaasdf', birthday: 883884087000, email:'test@example.com'})
     .end(function(err, res) {
+      console.log(res.body);
       expect(err).to.eql(null);
       expect(res).to.have.status(400);
       done();
