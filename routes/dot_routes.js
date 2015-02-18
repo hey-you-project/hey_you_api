@@ -91,6 +91,7 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
       dot.latitude = req.body.latitude;
       dot.title = req.body.title;
       dot.color = req.body.color;
+      dot.flags = [];
       dot.time = Date.now();
       dot.username = req.user.basic.username;
       dot.user_id = req.user._id;
@@ -103,6 +104,32 @@ module.exports = function(app, jwtAuth, jwtAuthOptional) {
         return res.status(500).send('there was an error');
       }
       res.json({dot_id: dot._id, time: dot.time});
+    });
+  });
+
+  // Flag a dot
+  app.post('/api/flag/:id', jwtAuth, function(req, res) {
+    Dot.find({_id: req.params.id}, function(err, dot) {
+      var found = false;
+      dot.flags.forEach(function(flag) {
+        if (flag == req.user._id) found = true;
+      });
+      if (!found) {
+        dot.flags.push(req.user._id);
+        if (dot.flags.length > 5) {
+          dot.remove(function(err) {
+            if (err) console.log(err);
+          });
+        } else {
+          dot.save(function(err, data) {
+            if (err) {
+              console.log(err);
+              return res.status(500).send('error');
+            }
+            res.json({msg: 'flagged'});
+          });
+        }
+      }
     });
   });
 
