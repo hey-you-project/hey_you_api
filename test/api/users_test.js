@@ -3,11 +3,19 @@
 process.env.MONGO_URL = 'mongodb://localhost/hey_you_test';
 var chai = require('chai');
 var chaihttp = require('chai-http');
+var mongoose = require('mongoose');
 chai.use(chaihttp);
 
 require('../../server');
 
 var expect = chai.expect;
+
+mongoose.connection.collections.users.drop();
+mongoose.connection.collections.dots.drop();
+mongoose.connection.collections.stars.drop();
+mongoose.connection.collections.comments.drop();
+mongoose.connection.collections.tos.drop();
+mongoose.connection.collections.messages.drop();
 
 describe('basic user creation and authentcation', function() {
 

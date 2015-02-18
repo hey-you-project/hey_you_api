@@ -4,7 +4,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-simple-mocha');
   grunt.loadNpmTasks('grunt-jscs');
-  grunt.loadNpmTasks('grunt-mongo-drop');
 
   grunt.initConfig({
     jshint: {
@@ -22,19 +21,13 @@ module.exports = function(grunt) {
     },
 
     simplemocha: {
-      src: ['test/api/users_test.js', 
+      src: ['test/api/users_test.js',
             'test/api/dots_test.js',
             'test/api/tos_test.js',
             'test/api/message_test.js']
-    },
-
-    mongo_drop: {
-      test: {
-        'uri': 'mongodb://localhost/hey_you_test',
-      }
     }
   });
 
-  grunt.registerTask('test', ['jshint', 'jscs', 'mongo_drop', 'simplemocha']);
+  grunt.registerTask('test', ['jshint', 'jscs', 'simplemocha']);
   grunt.registerTask('default', ['test']);
 };
